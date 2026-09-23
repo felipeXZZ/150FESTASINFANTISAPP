@@ -251,6 +251,13 @@ function tipoDaCompra(ids: string[], valor: number | null): Tipo | null {
   if (ids.some((id) => lista("WEBHOOK_PRODUTOS_UPGRADE").includes(id))) return "upgrade";
   if (ids.some((id) => lista("WEBHOOK_PRODUTOS_BASICO").includes(id))) return "basico";
 
+  // Com os produtos cadastrados, produto desconhecido não libera nada: senão
+  // qualquer produto novo posto no webhook daria plano pelo valor pago.
+  const temIdsCadastrados = ["WEBHOOK_PRODUTOS_BASICO", "WEBHOOK_PRODUTOS_COMPLETO", "WEBHOOK_PRODUTOS_UPGRADE"].some(
+    (nome) => lista(nome).length > 0,
+  );
+  if (ids.length > 0 && temIdsCadastrados) return null;
+
   if (valor !== null) {
     const numero = (nome: string, padrao: number) => {
       const n = Number(process.env[nome]);

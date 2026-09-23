@@ -86,7 +86,8 @@ Aplicar no SQL Editor do Supabase, nesta ordem:
 1. `supabase/schema.sql` — o schema da especificação (profiles, modulos, eventos).
 2. `supabase/02-acesso-webhook-admin.sql` — `compras`, `eventos_uso`,
    `webhook_log`, coluna `modulos.em_breve` e o bucket `capas`.
-3. `supabase/04-modulo-bloqueado.sql`, `05-so-basico.sql` e `06-compras-modulos.sql`
+3. `supabase/04-modulo-bloqueado.sql`, `05-so-basico.sql`, `06-compras-modulos.sql` e
+   `07-fechar-modulos.sql` (tira a leitura pública de `modulos`)
    — colunas `bloqueado`, `checkout_url`, `preco`, `so_basico` e
    `produtos_ggcheckout` de `modulos`, e a tabela `compras_modulos`.
 4. `supabase/03-modulos-exemplo.sql` (opcional) — 2 módulos: as festas e os 5 bônus juntos, com URL
@@ -237,7 +238,8 @@ cache-primeiro. Faixa "Instale na tela inicial e use como aplicativo" com
   produto da GGCheckout (`6jfVtbCkP0kG2phGqapy`, em `WEBHOOK_PRODUTOS_COMPLETO`).
   `amount` vem em centavos: inteiro a partir de 100 é lido como centavo.
   A Biblioteca Visual NÃO usa este webhook: é outro produto, com outra área. Sem
-  valor, cai em `WEBHOOK_PRODUTO_PADRAO`.
+  valor, cai em `WEBHOOK_PRODUTO_PADRAO`. Com IDs cadastrados, produto desconhecido é
+  ignorado (valor e padrão só valem para compra sem nenhum ID de produto).
 - Quem já é `basico` e paga de novo (outro `payment.id`) vira `completo`: é o
   upgrade, mesmo que o valor não tenha sido reconhecido.
 - Upsert em `compras` (e-mail, nome, plano). Plano nunca é rebaixado. Não envia
