@@ -6,10 +6,11 @@ import { IconeWhatsapp } from "@/components/icone-whatsapp";
 import { linkWhatsapp } from "@/lib/config";
 import { entrar, type EstadoEntrada } from "./actions";
 
-export function FormEntrada() {
-  const [estado, acao, enviando] = useActionState<EstadoEntrada, FormData>(entrar, {
-    status: "inicial",
-  });
+export function FormEntrada({ suspenso = false }: { suspenso?: boolean }) {
+  const [estado, acao, enviando] = useActionState<EstadoEntrada, FormData>(
+    entrar,
+    suspenso ? { status: "bloqueado", email: "" } : { status: "inicial" },
+  );
   const emailAtual = "email" in estado ? estado.email : "";
 
   return (

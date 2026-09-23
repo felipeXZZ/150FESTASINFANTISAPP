@@ -2,18 +2,19 @@ import { BannerNovidade } from "@/components/acervo/banner-novidade";
 import { ListaModulos } from "@/components/acervo/lista-modulos";
 import { carregarAcesso } from "@/lib/acesso";
 import { exigirSessao, primeiroNome } from "@/lib/sessao";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { estadoModulo, type Modulo } from "@/lib/tipos";
 
 export default async function MinhasFestasPage() {
   const sessao = await exigirSessao();
-  const supabase = await createClient();
   // Plano e módulos avulsos vêm do banco a cada abertura: compra aprovada pelo
   // webhook aparece na hora, sem sair e entrar de novo.
   const { plano, modulosComprados } = await carregarAcesso(sessao);
 
-  // "*": se o 04-modulo-bloqueado.sql ainda não rodou, as colunas novas só vêm vazias.
-  const { data, error } = await supabase
+  // Lido só no servidor, com a service role: a tabela não é pública (SQL 07),
+  // senão qualquer um com a chave pública veria todos os links do Drive.
+  // "*": se algum SQL de coluna nova ainda não rodou, a coluna só vem vazia.
+  const { data, error } = await createAdminClient()
     .from("modulos")
     .select("*")
     .eq("ativo", true)

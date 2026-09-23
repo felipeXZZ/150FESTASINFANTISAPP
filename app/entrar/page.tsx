@@ -3,7 +3,9 @@ import { FormEntrada } from "./form-entrada";
 
 export const metadata = { title: "Entrar — 150 Festas Infantis" };
 
-export default function EntrarPage() {
+export default async function EntrarPage({ searchParams }: PageProps<"/entrar">) {
+  // Vem de /sair?motivo=suspenso quando a compra foi suspensa no meio da sessão.
+  const suspenso = (await searchParams).motivo === "suspenso";
   return (
     <main className="min-h-dvh lg:grid lg:grid-cols-2">
       {/* Faixa marinho com a capa do guia: ela reconhece na hora o que comprou. */}
@@ -48,7 +50,7 @@ export default function EntrarPage() {
           />
 
           <div className="mt-4 rounded-3xl border border-linha bg-white p-5 shadow-[0_20px_50px_-24px_rgba(26,35,56,0.35)] lg:mt-0">
-            <FormEntrada />
+            <FormEntrada suspenso={suspenso} />
           </div>
 
           <CanaisAjuda />
