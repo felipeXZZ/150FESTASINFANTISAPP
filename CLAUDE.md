@@ -218,7 +218,11 @@ cache-primeiro. Faixa "Instale na tela inicial e use como aplicativo" com
 - Plano: primeiro pelos IDs em `WEBHOOK_PRODUTOS_BASICO/_COMPLETO/_UPGRADE`
   (olha `product.id` e `products[].id`, vale o maior). Sem ID conhecido, pelo
   valor pago: perto de `WEBHOOK_VALOR_UPGRADE` = upgrade; a partir de
-  `WEBHOOK_VALOR_MIN_COMPLETO` (padrão 20) = completo; abaixo = básico. Sem
+  `WEBHOOK_VALOR_MIN_COMPLETO` (15 em produção) = completo; abaixo = básico.
+  Checkouts que usam este webhook: Básico R$ 10 (`dHBGUyfqTCc1FSzI0XPk`),
+  Completo R$ 29,90 (`TrDo8Xg6jiuCWxmTrXEi`), upsell do popup R$ 17,90
+  (`GwyvIf2cHvXUvPxPInpC`) e upgrade no app R$ 6,90 (`NuTIRfsxypFzjKAOivEi`).
+  A Biblioteca Visual NÃO usa este webhook: é outro produto, com outra área. Sem
   valor, cai em `WEBHOOK_PRODUTO_PADRAO`.
 - Quem já é `basico` e paga de novo (outro `payment.id`) vira `completo`: é o
   upgrade, mesmo que o valor não tenha sido reconhecido.
