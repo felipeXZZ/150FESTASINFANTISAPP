@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 520" width="780" height="520">
+  <!-- Prévia estática da calculadora da Biblioteca Visual. Aparece com blur forte
+       na tela /calculadora. Pode ser trocada por um print real (mesmo nome, .svg
+       ou ajuste o src em app/(app)/calculadora/page.tsx). -->
+  <rect width="780" height="520" fill="#FCF7F8"/>
+  <rect x="0" y="0" width="780" height="64" fill="#2B1B2E"/>
+  <rect x="32" y="22" width="220" height="20" rx="10" fill="#FFFFFF" opacity=".85"/>
+  <rect x="32" y="96" width="260" height="18" rx="9" fill="#2B1B2E" opacity=".35"/>
+  <text x="32" y="200" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="700" fill="#B0306B">R$ 1.480,00</text>
+  <rect x="32" y="232" width="420" height="22" rx="11" fill="#1F7A5A" opacity=".85"/>
+  <rect x="32" y="290" width="716" height="196" rx="24" fill="#FFFFFF" stroke="#E9DCE1" stroke-width="2"/>
+  <g fill="#2B1B2E" opacity=".55">
+    <rect x="64" y="322" width="200" height="16" rx="8"/>
+    <rect x="64" y="362" width="240" height="16" rx="8"/>
+    <rect x="64" y="402" width="180" height="16" rx="8"/>
+    <rect x="64" y="442" width="220" height="16" rx="8"/>
+  </g>
+  <g fill="#2B1B2E" opacity=".8">
+    <rect x="596" y="322" width="120" height="16" rx="8"/>
+    <rect x="616" y="362" width="100" height="16" rx="8"/>
+    <rect x="606" y="402" width="110" height="16" rx="8"/>
+    <rect x="586" y="442" width="130" height="16" rx="8"/>
+  </g>
+  <rect x="520" y="96" width="228" height="56" rx="16" fill="#B0306B"/>
+  <rect x="560" y="116" width="148" height="16" rx="8" fill="#FFFFFF" opacity=".9"/>
+</svg>

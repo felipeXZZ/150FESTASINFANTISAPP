@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Paleta do site de vendas (150festasinfantis.vercel.app). */
+  --color-tinta: #1a2338;
+  --color-tinta-suave: #4c5a72;
+  --color-marinho: #0b1e5b;
+  --color-azul: #1d4ed8;
+  --color-azul-escuro: #0b1e5b;
+  --color-azul-claro: #dce6f7;
+  --color-ouro: #f0b429;
+  --color-ouro-claro: #fdf4de;
+  --color-verde: #22b455;
+  --color-verde-escuro: #1f7a45;
+  --color-verde-compra-escuro: #159b45;
+  --color-papel: #f5f1eb;
+  --color-linha: #e7e0d5;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-titulo: var(--font-bricolage), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-papel font-sans text-tinta antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-azul;
+  }
+}
+
+/* Altura da barra inferior + área segura do iPhone. */
+@utility pb-barra {
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+}
+
+@utility pb-seguro {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility pt-seguro {
+  padding-top: env(safe-area-inset-top);
+}

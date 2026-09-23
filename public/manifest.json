@@ -1,0 +1,17 @@
+{
+  "name": "150 Festas Infantis",
+  "short_name": "Festas",
+  "description": "Suas 150 festas infantis prontas pra montar, com os bônus.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0B1E5B",
+  "background_color": "#F5F1EB",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
