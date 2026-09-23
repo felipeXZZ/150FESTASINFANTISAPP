@@ -219,7 +219,8 @@ cache-primeiro. Faixa "Instale na tela inicial e use como aplicativo" com
   (olha `product.id` e `products[].id`, vale o maior). Sem ID conhecido, pelo
   valor pago: perto de `WEBHOOK_VALOR_UPGRADE` = upgrade; a partir de
   `WEBHOOK_VALOR_MIN_COMPLETO` (16 em produção) = completo; abaixo = básico.
-  Checkouts que usam este webhook: Básico R$ 10 (`dHBGUyfqTCc1FSzI0XPk`),
+  Checkouts que usam este webhook: Básico R$ 10 (`dHBGUyfqTCc1FSzI0XPk`, produto
+  "150 Festas Infantis: Copiar e Colar" `AhcuLW7B0yATLyaYSdK5`, em `WEBHOOK_PRODUTOS_BASICO`),
   Completo R$ 29,90 (`TrDo8Xg6jiuCWxmTrXEi`), upsell do popup R$ 17,90
   (`GwyvIf2cHvXUvPxPInpC`) e upgrade no app R$ 6,90 (`NuTIRfsxypFzjKAOivEi`).
   A oferta de R$ 12,90 (`je3Zk5rzT1MvKP5imfgR`) não é mais usada. Os do Completo ficam no mesmo
