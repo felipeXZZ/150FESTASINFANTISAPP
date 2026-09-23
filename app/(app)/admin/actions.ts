@@ -20,6 +20,7 @@ export type DadosModulo = {
   checkout_url: string;
   preco: string;
   so_basico: boolean;
+  produtos_ggcheckout: string;
 };
 
 export type Resposta = { ok: true; id: string } | { ok: false; mensagem: string };
@@ -59,6 +60,13 @@ export async function salvarModulo(d: DadosModulo): Promise<Resposta> {
     checkout_url: checkout || null,
     preco: d.preco.trim().slice(0, 30) || null,
     so_basico: Boolean(d.so_basico),
+    // IDs da GGCheckout: só letras e números, separados por vírgula.
+    produtos_ggcheckout:
+      d.produtos_ggcheckout
+        .split(/[\s,]+/)
+        .map((id) => id.replace(/[^A-Za-z0-9_-]/g, ""))
+        .filter(Boolean)
+        .join(",") || null,
   };
 
   const admin = createAdminClient();

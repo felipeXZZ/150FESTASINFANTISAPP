@@ -23,6 +23,7 @@ type ModuloBanco = {
   checkout_url?: string | null;
   preco?: string | null;
   so_basico?: boolean | null;
+  produtos_ggcheckout?: string | null;
 };
 
 const INPUT =
@@ -45,6 +46,7 @@ export function FormModulo({ modulo }: { modulo?: ModuloBanco }) {
     checkout_url: modulo?.checkout_url ?? "",
     preco: modulo?.preco ?? "",
     so_basico: modulo?.so_basico ?? false,
+    produtos_ggcheckout: modulo?.produtos_ggcheckout ?? "",
   });
   const [arquivo, setArquivo] = useState<File | null>(null);
   const [previa, setPrevia] = useState<string | null>(null);
@@ -234,9 +236,21 @@ export function FormModulo({ modulo }: { modulo?: ModuloBanco }) {
                 onChange={(e) => mudar({ preco: e.target.value })}
               />
             </Campo>
+            <Campo rotulo="ID do produto na GGCheckout">
+              <input
+                placeholder="Ex: 6jfVtbCkP0kG2phGqapy"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                className={INPUT}
+                value={dados.produtos_ggcheckout}
+                onChange={(e) => mudar({ produtos_ggcheckout: e.target.value })}
+              />
+            </Campo>
             <p className="text-sm text-tinta/60">
-              Sem link, o botão usa o checkout do Pacote Completo. O app ainda não registra a
-              compra de módulo avulso: entregue o material pela própria GGCheckout.
+              Com o ID, a compra aprovada libera este módulo sozinha para quem comprou (o
+              produto precisa estar no webhook da GGCheckout). Mais de um ID: separe por
+              vírgula. Sem link de pagamento, o botão usa o checkout do Pacote Completo.
             </p>
           </div>
         )}

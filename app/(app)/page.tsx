@@ -1,5 +1,6 @@
 import { BannerNovidade } from "@/components/acervo/banner-novidade";
 import { ListaModulos } from "@/components/acervo/lista-modulos";
+import { carregarAcesso } from "@/lib/acesso";
 import { exigirSessao, primeiroNome } from "@/lib/sessao";
 import { createClient } from "@/lib/supabase/server";
 import { estadoModulo, type Modulo } from "@/lib/tipos";
@@ -7,6 +8,9 @@ import { estadoModulo, type Modulo } from "@/lib/tipos";
 export default async function MinhasFestasPage() {
   const sessao = await exigirSessao();
   const supabase = await createClient();
+  // Plano e módulos avulsos vêm do banco a cada abertura: compra aprovada pelo
+  // webhook aparece na hora, sem sair e entrar de novo.
+  const { plano, modulosComprados } = await carregarAcesso(sessao);
 
   // "*": se o 04-modulo-bloqueado.sql ainda não rodou, as colunas novas só vêm vazias.
   const { data, error } = await supabase
@@ -18,7 +22,7 @@ export default async function MinhasFestasPage() {
   if (error) console.error("[acervo] modulos", error.message);
   const modulos = ((data ?? []) as Partial<Modulo>[])
     // Quem tem o Completo não vê o que é só do Básico: já está dentro do que ela tem.
-    .filter((m) => !(sessao.plano === "completo" && m.so_basico))
+    .filter((m) => !(plano === "completo" && m.so_basico))
     .map((m) => {
       const modulo: Modulo = {
         id: m.id!,
@@ -34,9 +38,15 @@ export default async function MinhasFestasPage() {
         checkout_url: m.checkout_url ?? null,
         preco: m.preco ?? null,
         so_basico: Boolean(m.so_basico),
+        produtos_ggcheckout: null, // fica no servidor
       };
+      // Módulo avulso comprado: abre para ela, qualquer que seja o plano.
+      if (modulosComprados.has(modulo.id)) {
+        modulo.bloqueado = false;
+        modulo.plano_minimo = "basico";
+      }
       // O link do Drive só vai para o navegador de quem pode abrir o módulo.
-      if (estadoModulo(modulo, sessao.plano) !== "liberado") modulo.url_drive = "";
+      if (estadoModulo(modulo, plano) !== "liberado") modulo.url_drive = "";
       return modulo;
     });
 
@@ -51,7 +61,7 @@ export default async function MinhasFestasPage() {
 
       <section>
         <h2 className="mb-3 text-lg font-semibold">Módulos liberados</h2>
-        <ListaModulos modulos={modulos} plano={sessao.plano} />
+        <ListaModulos modulos={modulos} plano={plano} />
       </section>
     </div>
   );

@@ -86,8 +86,9 @@ Aplicar no SQL Editor do Supabase, nesta ordem:
 1. `supabase/schema.sql` — o schema da especificação (profiles, modulos, eventos).
 2. `supabase/02-acesso-webhook-admin.sql` — `compras`, `eventos_uso`,
    `webhook_log`, coluna `modulos.em_breve` e o bucket `capas`.
-3. `supabase/04-modulo-bloqueado.sql` e `supabase/05-so-basico.sql` — colunas
-   `bloqueado`, `checkout_url`, `preco` e `so_basico` de `modulos`.
+3. `supabase/04-modulo-bloqueado.sql`, `05-so-basico.sql` e `06-compras-modulos.sql`
+   — colunas `bloqueado`, `checkout_url`, `preco`, `so_basico` e
+   `produtos_ggcheckout` de `modulos`, e a tabela `compras_modulos`.
 4. `supabase/03-modulos-exemplo.sql` (opcional) — 2 módulos: as festas e os 5 bônus juntos, com URL
    do Drive a trocar.
 
@@ -119,8 +120,9 @@ no Supabase; foi o que fez o Kit abandonar esse caminho).
 Limite conhecido: quem souber o e-mail de uma compradora entra. O caminho para
 acesso individual de verdade é magic link do Supabase Auth com SMTP próprio.
 
-O plano fica no cookie: depois de um upgrade, a cliente precisa sair e entrar de
-novo para ver os bônus.
+O cookie só prova quem ela é. Plano e módulos avulsos são lidos do banco a cada
+abertura de Minhas festas e Conta (`lib/acesso.ts`): upgrade ou compra avulsa
+aprovada pelo webhook aparece na hora, sem sair e entrar de novo.
 
 ---
 
@@ -165,8 +167,9 @@ A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
    - bloqueado (`bloqueado`, em `supabase/04-modulo-bloqueado.sql`): vendido à
      parte para qualquer plano. Preto e branco com cadeado; ao tocar abre o popup
      de pagamento com `checkout_url` e `preco` do próprio módulo (sem link, usa o
-     checkout do upgrade). A compra avulsa ainda não é registrada: a entrega é
-     pela GGCheckout.
+     checkout do upgrade). Com o "ID do produto na GGCheckout" preenchido
+     (`produtos_ggcheckout`, em `supabase/06-compras-modulos.sql`), a compra
+     aprovada grava `compras_modulos` e o módulo abre para ela na hora.
    - só para o Básico (`so_basico`, em `supabase/05-so-basico.sql`): aparece para
      o plano básico e some para quem tem o Completo (ex: as 50 festas, que já
      estão dentro das 150).
@@ -242,6 +245,9 @@ cache-primeiro. Faixa "Instale na tela inicial e use como aplicativo" com
 - 200 para tudo que foi processado ou ignorado de propósito (inclusive o evento
   `test`); 500 só em falha nossa, para o gateway tentar de novo.
 - Toda requisição vai para `webhook_log` com o payload cru.
+- Produto ligado a um módulo avulso (campo do `/admin`) libera só o módulo, em
+  `compras_modulos`. Compra que só tem produtos avulsos não mexe no plano, nem
+  pelo valor nem pela regra de segunda compra.
 - Reembolso e chargeback são só registrados; bloquear fica para depois
   (manualmente: `compras.ativo = false`).
 

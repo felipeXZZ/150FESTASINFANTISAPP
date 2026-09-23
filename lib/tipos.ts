@@ -18,6 +18,8 @@ export type Modulo = {
   preco: string | null;
   /** Só aparece para o plano básico; quem tem o Completo não vê (ex: as 50 festas). */
   so_basico: boolean;
+  /** IDs de produto da GGCheckout que liberam este módulo avulso (separados por vírgula). */
+  produtos_ggcheckout: string | null;
 };
 
 /** Como o card aparece para a cliente. */
@@ -42,5 +44,5 @@ export function estadoModulo(
 export function precoLegivel(preco: string | null | undefined) {
   const p = (preco ?? "").trim();
   if (!p) return "";
-  return /^r$/i.test(p) ? p : `R$ ${p}`;
+  return /^r\$/i.test(p) ? p : `R$ ${p}`;
 }

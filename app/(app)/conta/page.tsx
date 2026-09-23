@@ -10,6 +10,7 @@ import {
   linkWhatsapp,
   TEXTO_BOTAO_UPGRADE,
 } from "@/lib/config";
+import { carregarAcesso } from "@/lib/acesso";
 import { exigirSessao } from "@/lib/sessao";
 
 export const metadata = { title: "Conta — 150 Festas Infantis" };
@@ -21,6 +22,7 @@ const NOME_PLANO = {
 
 export default async function ContaPage() {
   const sessao = await exigirSessao();
+  const { plano } = await carregarAcesso(sessao);
 
   return (
     <div className="mx-auto max-w-xl space-y-5">
@@ -33,11 +35,11 @@ export default async function ContaPage() {
         </div>
         <div className="py-3">
           <dt className="text-sm text-tinta/60">Plano</dt>
-          <dd className="font-semibold">{NOME_PLANO[sessao.plano]}</dd>
+          <dd className="font-semibold">{NOME_PLANO[plano]}</dd>
         </div>
       </dl>
 
-      {sessao.plano === "basico" && (
+      {plano === "basico" && (
         <section className="rounded-2xl border border-ouro/60 bg-ouro-claro p-4">
           <h2 className="flex items-center gap-2 font-titulo text-xl">
             <Sparkles className="size-5 text-ouro" aria-hidden="true" />

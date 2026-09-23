@@ -78,15 +78,29 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true, ignorado: "status" });
   }
 
-  const tipo = tipoDaCompra(produtos, valor);
-  if (!email || !tipo) {
-    await log("ignorado", { ...base, detalhe: !email ? "sem e-mail" : "produto não mapeado" });
-    return NextResponse.json({ ok: true, ignorado: !email ? "email" : "produto" });
+  if (!email) {
+    await log("ignorado", { ...base, detalhe: "sem e-mail" });
+    return NextResponse.json({ ok: true, ignorado: "email" });
+  }
+
+  // Produtos ligados a módulos avulsos (campo do /admin) liberam só o módulo.
+  const { avulsos, idsAvulsos } = await modulosDaCompra(admin, produtos);
+  const produtosDePlano = produtos.filter((id) => !idsAvulsos.has(id));
+  // Compra só de módulo avulso não mexe no plano, nem pelo valor: senão o
+  // "+40 festas" de R$ 9,90 viraria Básico, ou "segunda compra" do Completo.
+  const soAvulso = produtos.length > 0 && produtosDePlano.length === 0;
+  const tipo = soAvulso ? null : tipoDaCompra(produtosDePlano, valor);
+
+  if (!tipo && avulsos.length === 0) {
+    await log("ignorado", { ...base, detalhe: "produto não mapeado" });
+    return NextResponse.json({ ok: true, ignorado: "produto" });
   }
 
   try {
-    const detalhe = await liberarAcesso(admin, { email, nome, tipo, pagamentoId });
-    await log("processado", { ...base, detalhe });
+    const detalhes: string[] = [];
+    if (tipo) detalhes.push(await liberarAcesso(admin, { email, nome, tipo, pagamentoId }));
+    if (avulsos.length > 0) detalhes.push(await liberarModulos(admin, { email, avulsos, pagamentoId }));
+    await log("processado", { ...base, detalhe: detalhes.join("; ") });
     return NextResponse.json({ ok: true });
   } catch (e) {
     const mensagem = e instanceof Error ? e.message : String(e);
@@ -138,6 +152,55 @@ async function liberarAcesso(
   if (error) throw new Error(`grava compra: ${error.message}`);
 
   return `${existente ? "acesso atualizado" : "acesso liberado"}, plano ${plano} (${segundaCompra ? "segunda compra" : tipo})`;
+}
+
+type ModuloAvulso = { id: string; titulo: string };
+
+/**
+ * Módulos cujo campo "ID do produto na GGCheckout" bate com algum produto da
+ * compra. Se a coluna ainda não existir (SQL 06 não rodado), segue sem avulsos.
+ */
+async function modulosDaCompra(admin: SupabaseClient, produtos: string[]) {
+  const vazio = { avulsos: [] as ModuloAvulso[], idsAvulsos: new Set<string>() };
+  if (produtos.length === 0) return vazio;
+
+  const { data, error } = await admin
+    .from("modulos")
+    .select("id, titulo, produtos_ggcheckout")
+    .not("produtos_ggcheckout", "is", null);
+  if (error) {
+    console.warn("[webhook] módulos avulsos", error.message);
+    return vazio;
+  }
+
+  const avulsos: ModuloAvulso[] = [];
+  const idsAvulsos = new Set<string>();
+  for (const m of data ?? []) {
+    const ids = String(m.produtos_ggcheckout ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const batem = ids.filter((id) => produtos.includes(id));
+    if (batem.length > 0) {
+      avulsos.push({ id: m.id, titulo: m.titulo });
+      batem.forEach((id) => idsAvulsos.add(id));
+    }
+  }
+  return { avulsos, idsAvulsos };
+}
+
+async function liberarModulos(
+  admin: SupabaseClient,
+  { email, avulsos, pagamentoId }: { email: string; avulsos: ModuloAvulso[]; pagamentoId?: string },
+) {
+  const linhas = avulsos.map((m) => ({ email, modulo_id: m.id, pagamento_id: pagamentoId ?? null, ativo: true }));
+  const { error } = await admin.from("compras_modulos").upsert(linhas, { onConflict: "email,modulo_id" });
+  if (error) throw new Error(`grava módulo avulso: ${error.message}`);
+
+  // Sem compra do kit ela não entra no app; o módulo fica guardado para quando entrar.
+  const { data: compra } = await admin.from("compras").select("id").eq("email", email).maybeSingle();
+  const titulos = avulsos.map((m) => m.titulo).join(", ");
+  return `módulo liberado: ${titulos}${compra ? "" : " (sem compra do kit: ainda não entra no app)"}`;
 }
 
 /** IDs do produto principal e dos order bumps/upsells da mesma compra. */
