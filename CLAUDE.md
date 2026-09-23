@@ -209,7 +209,8 @@ outro produto, de outro público. Nenhum texto dessa tela pode usar
 
 E-mail, plano por extenso ("Pacote Completo — acesso vitalício"), card "Siga a
 gente no Instagram" (acompanhar novidades ou mandar mensagem com dúvidas, com o @ de `NEXT_PUBLIC_INSTAGRAM_URL`),
-"Falar com o suporte" e "Sair". Plano `basico` vê o card de upgrade. Admins veem o link para
+"Falar com o suporte" e "Sair". Plano `basico` vê o card de upgrade, cujo botão abre o mesmo
+popup de upgrade dos cards com cadeado. Admins veem o link para
 `/admin`.
 
 ---

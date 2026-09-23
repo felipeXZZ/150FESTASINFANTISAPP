@@ -1,15 +1,10 @@
 import Link from "next/link";
 import { ChevronRight, LogOut, Settings, Sparkles } from "lucide-react";
+import { BotaoUpgrade } from "@/components/acervo/botao-upgrade";
 import { IconeInstagram } from "@/components/icone-instagram";
 import { IconeWhatsapp } from "@/components/icone-whatsapp";
 import { ehAdmin } from "@/lib/admin";
-import {
-  arrobaInstagram,
-  CHECKOUT_UPGRADE_URL,
-  INSTAGRAM_URL,
-  linkWhatsapp,
-  TEXTO_BOTAO_UPGRADE,
-} from "@/lib/config";
+import { arrobaInstagram, INSTAGRAM_URL, linkWhatsapp } from "@/lib/config";
 import { carregarAcesso } from "@/lib/acesso";
 import { exigirSessao } from "@/lib/sessao";
 
@@ -49,14 +44,7 @@ export default async function ContaPage() {
             As 150 festas mais os 5 bônus: manual de montagem, checklist de compras, guia de
             balões, cronograma e lembrancinhas. Pagamento único.
           </p>
-          <a
-            href={CHECKOUT_UPGRADE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 flex min-h-14 items-center justify-center rounded-xl bg-verde px-4 text-center text-base font-semibold text-white active:bg-verde-compra-escuro"
-          >
-            {TEXTO_BOTAO_UPGRADE}
-          </a>
+          <BotaoUpgrade className="mt-4 flex min-h-14 w-full items-center justify-center rounded-xl bg-verde px-4 text-center text-base font-semibold text-white active:bg-verde-compra-escuro" />
         </section>
       )}
 

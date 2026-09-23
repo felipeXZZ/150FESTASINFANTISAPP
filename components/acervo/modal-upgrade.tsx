@@ -15,7 +15,7 @@ import {
 import { CHECKOUT_UPGRADE_URL, PRECO_UPGRADE } from "@/lib/config";
 import type { Modulo } from "@/lib/tipos";
 
-type Props = { ref: Ref<HTMLDialogElement>; bloqueados: Modulo[] };
+type Props = { ref: Ref<HTMLDialogElement>; bloqueados?: Modulo[] };
 
 // O que o Pacote Completo acrescenta ao Básico: as festas que faltam e os 5 bônus.
 // A primeira vem em destaque, como a calculadora no popup da Biblioteca.
@@ -29,7 +29,7 @@ const ITENS: { Icone: LucideIcon; texto: string }[] = [
 ];
 
 /** Popup de upgrade (Básico → Pacote Completo), no mesmo estilo do da Biblioteca. */
-export function ModalUpgrade({ ref, bloqueados }: Props) {
+export function ModalUpgrade({ ref, bloqueados = [] }: Props) {
   return (
     <dialog
       ref={ref}
