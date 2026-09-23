@@ -223,7 +223,8 @@ cache-primeiro. Faixa "Instale na tela inicial e use como aplicativo" com
   Completo R$ 29,90 (`TrDo8Xg6jiuCWxmTrXEi`), upsell do popup R$ 17,90
   (`GwyvIf2cHvXUvPxPInpC`) e upgrade no app R$ 6,90 (`NuTIRfsxypFzjKAOivEi`).
   A oferta de R$ 12,90 (`je3Zk5rzT1MvKP5imfgR`) não é mais usada. Os do Completo ficam no mesmo
-  produto da GGCheckout; o ideal é pôr o ID dele em `WEBHOOK_PRODUTOS_COMPLETO`.
+  produto da GGCheckout (`6jfVtbCkP0kG2phGqapy`, em `WEBHOOK_PRODUTOS_COMPLETO`).
+  `amount` vem em centavos: inteiro a partir de 100 é lido como centavo.
   A Biblioteca Visual NÃO usa este webhook: é outro produto, com outra área. Sem
   valor, cai em `WEBHOOK_PRODUTO_PADRAO`.
 - Quem já é `basico` e paga de novo (outro `payment.id`) vira `completo`: é o

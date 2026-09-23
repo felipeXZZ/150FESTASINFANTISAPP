@@ -160,8 +160,9 @@ function idsDeProduto(payload: unknown) {
 function valorEmReais(v: unknown) {
   const n = typeof v === "string" ? Number(v.replace(",", ".")) : Number(v);
   if (!Number.isFinite(n) || n <= 0) return null;
-  // Acima de mil não é preço deste produto: veio em centavos.
-  return n > 1000 ? n / 100 : n;
+  // A GGCheckout manda centavos (R$ 10,00 = 1000). Nenhum produto daqui custa
+  // R$ 100 ou mais, então inteiro a partir de 100 é centavo; 10 ou 29.9 é real.
+  return Number.isInteger(n) && n >= 100 ? n / 100 : n;
 }
 
 /**
