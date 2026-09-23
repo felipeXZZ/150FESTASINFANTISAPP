@@ -162,8 +162,11 @@ A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
    - liberado (`completo` vê tudo; `basico` vê `plano_minimo = 'basico'`): abre
      `url_drive` em nova aba e grava `abriu_modulo`;
    - bloqueado pelo plano: capa em preto e branco, cadeado dourado, "Disponível no Pacote
-     Completo". Ao tocar grava `viu_bloqueado` e abre o modal com os bloqueados
-     e o botão para `NEXT_PUBLIC_CHECKOUT_UPGRADE_URL`;
+     Completo". Ao tocar grava `viu_bloqueado` e abre o popup de upgrade, no
+     estilo do da Biblioteca: topo marinho, imagem do guia com os 5 bônus
+     (`public/pacote-completo-480/800.webp`), 6 blocos ("+100 festas prontas" em
+     destaque e os bônus), `NEXT_PUBLIC_PRECO_UPGRADE` e botão verde para
+     `NEXT_PUBLIC_CHECKOUT_UPGRADE_URL`;
    - em breve (`em_breve`): preto e branco, selo "Em breve", não abre;
    - bloqueado (`bloqueado`, em `supabase/04-modulo-bloqueado.sql`): vendido à
      parte para qualquer plano. Preto e branco com cadeado; ao tocar abre o popup
