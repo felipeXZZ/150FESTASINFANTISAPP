@@ -16,6 +16,8 @@ export type Modulo = {
   bloqueado: boolean;
   checkout_url: string | null;
   preco: string | null;
+  /** Só aparece para o plano básico; quem tem o Completo não vê (ex: as 50 festas). */
+  so_basico: boolean;
 };
 
 /** Como o card aparece para a cliente. */
@@ -34,4 +36,11 @@ export function estadoModulo(
   if (modulo.em_breve) return "em_breve";
   if (modulo.bloqueado) return "bloqueado_venda";
   return moduloLiberado(modulo, plano) ? "liberado" : "bloqueado_plano";
+}
+
+/** "9,90" -> "R$ 9,90"; quem já escreveu "R$" fica como está. */
+export function precoLegivel(preco: string | null | undefined) {
+  const p = (preco ?? "").trim();
+  if (!p) return "";
+  return /^r$/i.test(p) ? p : `R$ ${p}`;
 }

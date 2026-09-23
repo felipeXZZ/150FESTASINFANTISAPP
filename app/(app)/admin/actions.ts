@@ -19,6 +19,7 @@ export type DadosModulo = {
   bloqueado: boolean;
   checkout_url: string;
   preco: string;
+  so_basico: boolean;
 };
 
 export type Resposta = { ok: true; id: string } | { ok: false; mensagem: string };
@@ -57,6 +58,7 @@ export async function salvarModulo(d: DadosModulo): Promise<Resposta> {
     bloqueado: Boolean(d.bloqueado),
     checkout_url: checkout || null,
     preco: d.preco.trim().slice(0, 30) || null,
+    so_basico: Boolean(d.so_basico),
   };
 
   const admin = createAdminClient();

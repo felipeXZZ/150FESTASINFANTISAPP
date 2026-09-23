@@ -38,6 +38,12 @@ export const linkBiblioteca = () => comOrigem(BIBLIOTECA_URL);
 /** Checkout da Biblioteca; sem ele, o botão principal vai para a página de vendas. */
 export const linkCheckoutBiblioteca = () => comOrigem(BIBLIOTECA_CHECKOUT_URL) || linkBiblioteca();
 
+/** Do link do perfil tira o @: .../decorar.semcomplicacao/ -> @decorar.semcomplicacao */
+export function arrobaInstagram(url = INSTAGRAM_URL) {
+  const usuario = url.replace(/\/+$/, "").split("?")[0].split("/").pop();
+  return usuario ? `@${usuario}` : "Instagram";
+}
+
 export function linkWhatsapp(mensagem = "Olá! Preciso de ajuda com o 150 Festas Infantis.") {
   return `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
 }

@@ -16,6 +16,7 @@ type Linha = {
   ativo: boolean;
   em_breve: boolean;
   bloqueado?: boolean;
+  so_basico?: boolean;
 };
 
 export default async function AdminPage() {
@@ -69,6 +70,7 @@ export default async function AdminPage() {
                       {m.contador ? ` · ${m.contador}` : ""}
                       {m.em_breve ? " · em breve" : ""}
                       {m.bloqueado ? " · bloqueado" : ""}
+                      {m.so_basico ? " · só básico" : ""}
                       {m.ativo ? "" : " · inativo"}
                     </p>
                   </div>

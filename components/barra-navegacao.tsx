@@ -58,7 +58,19 @@ export function BarraNavegacao() {
                 aria-haspopup="dialog"
                 className={`${ABA} ${cor(pathname.startsWith("/calculadora"))}`}
               >
-                <Calculator className={icone(pathname.startsWith("/calculadora"))} strokeWidth={1.75} aria-hidden="true" />
+                <span className="relative">
+                  <Calculator className={icone(pathname.startsWith("/calculadora"))} strokeWidth={1.75} aria-hidden="true" />
+                  {/* Selo de lançamento: pulsa de leve para chamar atenção. */}
+                  <span className="absolute -top-2 left-1/2 ml-1.5 flex">
+                    <span
+                      aria-hidden="true"
+                      className="selo-novo-brilho absolute inset-0 rounded-full bg-verde"
+                    />
+                    <span className="relative rounded-full bg-verde px-1.5 py-px text-[9px] leading-[14px] font-bold text-white shadow-sm ring-2 ring-white">
+                      Novo
+                    </span>
+                  </span>
+                </span>
                 <span className="flex items-center gap-1">
                   Calculadora
                   <Lock className="size-3 text-ouro" strokeWidth={2.5} aria-hidden="true" />

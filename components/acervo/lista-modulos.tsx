@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Clock, FolderOpen, ImageOff, Lock } from "lucide-react";
 import { registrarEvento } from "@/app/(app)/acervo-actions";
 import { srcSetImagem, urlImagem } from "@/lib/imagem";
-import { estadoModulo, type EstadoModulo, type Modulo, type Plano, type TipoEvento } from "@/lib/tipos";
+import { estadoModulo, precoLegivel, type EstadoModulo, type Modulo, type Plano, type TipoEvento } from "@/lib/tipos";
 import { ModalCompra } from "./modal-compra";
 import { ModalUpgrade } from "./modal-upgrade";
 
@@ -147,7 +147,7 @@ function ConteudoCard({
           modulo.descricao && <p className="truncate text-sm text-tinta/70">{modulo.descricao}</p>
         ) : estado === "bloqueado_venda" ? (
           <p className="truncate text-sm font-semibold text-azul">
-            {modulo.preco ? `Toque para adquirir por ${modulo.preco}` : "Toque para adquirir"}
+            {modulo.preco ? `Toque para adquirir por ${precoLegivel(modulo.preco)}` : "Toque para adquirir"}
           </p>
         ) : (
           <p className="truncate text-sm font-semibold text-azul">Disponível no Pacote Completo</p>

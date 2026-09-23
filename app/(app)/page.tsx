@@ -16,25 +16,29 @@ export default async function MinhasFestasPage() {
     .order("ordem", { ascending: true });
 
   if (error) console.error("[acervo] modulos", error.message);
-  const modulos = ((data ?? []) as Partial<Modulo>[]).map((m) => {
-    const modulo: Modulo = {
-      id: m.id!,
-      titulo: m.titulo ?? "",
-      descricao: m.descricao ?? null,
-      capa_url: m.capa_url ?? null,
-      contador: m.contador ?? null,
-      url_drive: m.url_drive ?? "",
-      plano_minimo: m.plano_minimo === "completo" ? "completo" : "basico",
-      ordem: m.ordem ?? null,
-      em_breve: Boolean(m.em_breve),
-      bloqueado: Boolean(m.bloqueado),
-      checkout_url: m.checkout_url ?? null,
-      preco: m.preco ?? null,
-    };
-    // O link do Drive só vai para o navegador de quem pode abrir o módulo.
-    if (estadoModulo(modulo, sessao.plano) !== "liberado") modulo.url_drive = "";
-    return modulo;
-  });
+  const modulos = ((data ?? []) as Partial<Modulo>[])
+    // Quem tem o Completo não vê o que é só do Básico: já está dentro do que ela tem.
+    .filter((m) => !(sessao.plano === "completo" && m.so_basico))
+    .map((m) => {
+      const modulo: Modulo = {
+        id: m.id!,
+        titulo: m.titulo ?? "",
+        descricao: m.descricao ?? null,
+        capa_url: m.capa_url ?? null,
+        contador: m.contador ?? null,
+        url_drive: m.url_drive ?? "",
+        plano_minimo: m.plano_minimo === "completo" ? "completo" : "basico",
+        ordem: m.ordem ?? null,
+        em_breve: Boolean(m.em_breve),
+        bloqueado: Boolean(m.bloqueado),
+        checkout_url: m.checkout_url ?? null,
+        preco: m.preco ?? null,
+        so_basico: Boolean(m.so_basico),
+      };
+      // O link do Drive só vai para o navegador de quem pode abrir o módulo.
+      if (estadoModulo(modulo, sessao.plano) !== "liberado") modulo.url_drive = "";
+      return modulo;
+    });
 
   return (
     <div className="space-y-6">

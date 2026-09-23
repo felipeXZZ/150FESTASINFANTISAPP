@@ -1,8 +1,15 @@
 import Link from "next/link";
 import { ChevronRight, LogOut, Settings, Sparkles } from "lucide-react";
+import { IconeInstagram } from "@/components/icone-instagram";
 import { IconeWhatsapp } from "@/components/icone-whatsapp";
 import { ehAdmin } from "@/lib/admin";
-import { CHECKOUT_UPGRADE_URL, linkWhatsapp, TEXTO_BOTAO_UPGRADE } from "@/lib/config";
+import {
+  arrobaInstagram,
+  CHECKOUT_UPGRADE_URL,
+  INSTAGRAM_URL,
+  linkWhatsapp,
+  TEXTO_BOTAO_UPGRADE,
+} from "@/lib/config";
 import { exigirSessao } from "@/lib/sessao";
 
 export const metadata = { title: "Conta — 150 Festas Infantis" };
@@ -49,6 +56,27 @@ export default async function ContaPage() {
             {TEXTO_BOTAO_UPGRADE}
           </a>
         </section>
+      )}
+
+      {INSTAGRAM_URL && (
+        <a
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-2xl border border-linha bg-white p-4 transition active:scale-[0.99] active:bg-papel"
+        >
+          <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-sm">
+            <IconeInstagram className="size-6" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-semibold">Siga a gente no Instagram</span>
+            <span className="block text-sm leading-snug text-tinta-suave">
+              Acompanhe as novidades ou mande uma mensagem para tirar suas dúvidas.
+            </span>
+            <span className="mt-0.5 block truncate text-sm font-semibold text-azul">{arrobaInstagram()}</span>
+          </span>
+          <ChevronRight className="size-5 shrink-0 text-tinta/40" aria-hidden="true" />
+        </a>
       )}
 
       <div className="grid gap-2">

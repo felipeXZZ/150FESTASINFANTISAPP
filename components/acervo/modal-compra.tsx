@@ -4,7 +4,7 @@ import type { Ref } from "react";
 import { ArrowRight, ImageOff, Lock, X } from "lucide-react";
 import { CHECKOUT_UPGRADE_URL } from "@/lib/config";
 import { urlImagem } from "@/lib/imagem";
-import type { Modulo } from "@/lib/tipos";
+import { precoLegivel, type Modulo } from "@/lib/tipos";
 
 type Props = { ref: Ref<HTMLDialogElement>; modulo: Modulo | null };
 
@@ -66,7 +66,7 @@ export function ModalCompra({ ref, modulo }: Props) {
                   Pagamento único
                   <span className="block font-semibold text-tinta">sem mensalidade</span>
                 </span>
-                <span className="font-titulo text-3xl leading-none text-tinta">{modulo.preco}</span>
+                <span className="font-titulo text-3xl leading-none text-tinta">{precoLegivel(modulo.preco)}</span>
               </div>
             )}
 

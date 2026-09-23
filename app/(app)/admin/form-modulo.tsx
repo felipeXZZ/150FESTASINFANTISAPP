@@ -22,6 +22,7 @@ type ModuloBanco = {
   bloqueado?: boolean | null;
   checkout_url?: string | null;
   preco?: string | null;
+  so_basico?: boolean | null;
 };
 
 const INPUT =
@@ -43,6 +44,7 @@ export function FormModulo({ modulo }: { modulo?: ModuloBanco }) {
     bloqueado: modulo?.bloqueado ?? false,
     checkout_url: modulo?.checkout_url ?? "",
     preco: modulo?.preco ?? "",
+    so_basico: modulo?.so_basico ?? false,
   });
   const [arquivo, setArquivo] = useState<File | null>(null);
   const [previa, setPrevia] = useState<string | null>(null);
@@ -177,6 +179,21 @@ export function FormModulo({ modulo }: { modulo?: ModuloBanco }) {
         <span>
           <span className="block font-semibold">Em breve</span>
           <span className="block text-sm text-tinta/60">Capa em preto e branco, selo “Em breve” e não abre.</span>
+        </span>
+      </label>
+
+      <label className="flex min-h-12 items-center gap-3 rounded-xl border border-linha bg-white px-3 py-2">
+        <input
+          type="checkbox"
+          className="size-5 accent-azul"
+          checked={dados.so_basico}
+          onChange={(e) => mudar({ so_basico: e.target.checked })}
+        />
+        <span>
+          <span className="block font-semibold">Só para o Básico</span>
+          <span className="block text-sm text-tinta/60">
+            Some para quem tem o Pacote Completo. Use no que já está dentro do Completo, como as 50 festas.
+          </span>
         </span>
       </label>
 

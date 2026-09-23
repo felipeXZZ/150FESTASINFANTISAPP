@@ -86,7 +86,9 @@ Aplicar no SQL Editor do Supabase, nesta ordem:
 1. `supabase/schema.sql` — o schema da especificação (profiles, modulos, eventos).
 2. `supabase/02-acesso-webhook-admin.sql` — `compras`, `eventos_uso`,
    `webhook_log`, coluna `modulos.em_breve` e o bucket `capas`.
-3. `supabase/03-modulos-exemplo.sql` (opcional) — 2 módulos: as festas e os 5 bônus juntos, com URL
+3. `supabase/04-modulo-bloqueado.sql` e `supabase/05-so-basico.sql` — colunas
+   `bloqueado`, `checkout_url`, `preco` e `so_basico` de `modulos`.
+4. `supabase/03-modulos-exemplo.sql` (opcional) — 2 módulos: as festas e os 5 bônus juntos, com URL
    do Drive a trocar.
 
 Não existe tabela `calculos`: a calculadora não roda aqui. `profiles` e `eventos`
@@ -134,7 +136,8 @@ novo para ver os bônus.
 ```
 
 A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
-"(bloqueada)".
+"(bloqueada)" — e o selo verde "Novo" sobre o ícone, com um halo que pulsa
+(`.selo-novo-brilho`), para mostrar que é lançamento.
 
 **Animações** (em `app/globals.css`, todas desligadas com `prefers-reduced-motion`):
 
@@ -164,6 +167,9 @@ A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
      de pagamento com `checkout_url` e `preco` do próprio módulo (sem link, usa o
      checkout do upgrade). A compra avulsa ainda não é registrada: a entrega é
      pela GGCheckout.
+   - só para o Básico (`so_basico`, em `supabase/05-so-basico.sql`): aparece para
+     o plano básico e some para quem tem o Completo (ex: as 50 festas, que já
+     estão dentro das 150).
    - Todo card que a cliente não pode abrir sai sem `url_drive` do servidor.
 
 Módulo bloqueado nunca some da tela.
@@ -192,8 +198,9 @@ outro produto, de outro público. Nenhum texto dessa tela pode usar
 
 ## 9. Conta (`/conta`)
 
-E-mail, plano por extenso ("Pacote Completo — acesso vitalício"), "Falar com o
-suporte" e "Sair". Plano `basico` vê o card de upgrade. Admins veem o link para
+E-mail, plano por extenso ("Pacote Completo — acesso vitalício"), card "Siga a
+gente no Instagram" (acompanhar novidades ou mandar mensagem com dúvidas, com o @ de `NEXT_PUBLIC_INSTAGRAM_URL`),
+"Falar com o suporte" e "Sair". Plano `basico` vê o card de upgrade. Admins veem o link para
 `/admin`.
 
 ---

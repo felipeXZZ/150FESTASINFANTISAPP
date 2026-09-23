@@ -1,15 +1,9 @@
 import { ChevronRight, MessageCircleHeart } from "lucide-react";
 import { IconeInstagram } from "@/components/icone-instagram";
 import { IconeWhatsapp } from "@/components/icone-whatsapp";
-import { INSTAGRAM_URL, linkWhatsapp, WHATSAPP_NUMERO, whatsappLegivel } from "@/lib/config";
+import { arrobaInstagram, INSTAGRAM_URL, linkWhatsapp, WHATSAPP_NUMERO, whatsappLegivel } from "@/lib/config";
 
 const MENSAGEM = "Olá! Não estou conseguindo entrar no 150 Festas Infantis.";
-
-/** Do link do perfil tira o @: .../decorar.semcomplicacao/ -> @decorar.semcomplicacao */
-function arroba(url: string) {
-  const usuario = url.replace(/\/+$/, "").split("?")[0].split("/").pop();
-  return usuario ? `@${usuario}` : "Instagram";
-}
 
 /** Saída para quem travou na entrada: ninguém fica sem falar com a gente. */
 export function CanaisAjuda() {
@@ -58,7 +52,7 @@ export function CanaisAjuda() {
             </span>
             <span className="flex-1 leading-tight">
               <span className="block text-sm font-semibold">Chamar no Instagram</span>
-              <span className="block text-xs text-tinta-suave">{arroba(INSTAGRAM_URL)}</span>
+              <span className="block text-xs text-tinta-suave">{arrobaInstagram()}</span>
             </span>
             <ChevronRight className="size-5 shrink-0 text-tinta/40" aria-hidden="true" />
           </a>
