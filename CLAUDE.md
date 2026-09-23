@@ -218,10 +218,12 @@ cache-primeiro. Faixa "Instale na tela inicial e use como aplicativo" com
 - Plano: primeiro pelos IDs em `WEBHOOK_PRODUTOS_BASICO/_COMPLETO/_UPGRADE`
   (olha `product.id` e `products[].id`, vale o maior). Sem ID conhecido, pelo
   valor pago: perto de `WEBHOOK_VALOR_UPGRADE` = upgrade; a partir de
-  `WEBHOOK_VALOR_MIN_COMPLETO` (15 em produção) = completo; abaixo = básico.
+  `WEBHOOK_VALOR_MIN_COMPLETO` (11 em produção) = completo; abaixo = básico.
   Checkouts que usam este webhook: Básico R$ 10 (`dHBGUyfqTCc1FSzI0XPk`),
   Completo R$ 29,90 (`TrDo8Xg6jiuCWxmTrXEi`), upsell do popup R$ 17,90
-  (`GwyvIf2cHvXUvPxPInpC`) e upgrade no app R$ 6,90 (`NuTIRfsxypFzjKAOivEi`).
+  (`GwyvIf2cHvXUvPxPInpC`), oferta de R$ 12,90 (`je3Zk5rzT1MvKP5imfgR`) e upgrade
+  no app R$ 6,90 (`NuTIRfsxypFzjKAOivEi`). Os quatro do Completo ficam no mesmo
+  produto da GGCheckout; o ideal é pôr o ID dele em `WEBHOOK_PRODUTOS_COMPLETO`.
   A Biblioteca Visual NÃO usa este webhook: é outro produto, com outra área. Sem
   valor, cai em `WEBHOOK_PRODUTO_PADRAO`.
 - Quem já é `basico` e paga de novo (outro `payment.id`) vira `completo`: é o
