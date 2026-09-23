@@ -158,7 +158,9 @@ A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
 1. Saudação "Olá, {primeiro nome}!" (neutra: serve para mulher e homem) e "Sua coleção completa de festas,
    pronta pra montar." Nome da compra; sem nome, a parte do e-mail antes do `@`.
 2. Banner de novidade (`NEXT_PUBLIC_BANNER_NOVIDADE`); vazio = não aparece.
-3. "Módulos liberados": cards de `modulos` por `ordem`, 1/2/3 colunas.
+3. "Módulos liberados": cards de `modulos`, 1/2/3 colunas, nesta sequência: o que
+   ela já tem; o que o upgrade libera (as 150 festas antes dos bônus); os vendidos
+   à parte; os "em breve". Dentro de cada grupo vale a `ordem` do admin.
    - liberado (`completo` vê tudo; `basico` vê `plano_minimo = 'basico'`): abre
      `url_drive` em nova aba e grava `abriu_modulo`;
    - bloqueado pelo plano: capa em preto e branco, cadeado dourado, "Disponível no Pacote

@@ -3,7 +3,14 @@ import { ListaModulos } from "@/components/acervo/lista-modulos";
 import { carregarAcesso } from "@/lib/acesso";
 import { exigirSessao, primeiroNome } from "@/lib/sessao";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { estadoModulo, type Modulo } from "@/lib/tipos";
+import { estadoModulo, type EstadoModulo, type Modulo } from "@/lib/tipos";
+
+const PRIORIDADE: Record<EstadoModulo, number> = {
+  liberado: 0,
+  bloqueado_plano: 1,
+  bloqueado_venda: 2,
+  em_breve: 3,
+};
 
 export default async function MinhasFestasPage() {
   const sessao = await exigirSessao();
@@ -49,7 +56,11 @@ export default async function MinhasFestasPage() {
       // O link do Drive só vai para o navegador de quem pode abrir o módulo.
       if (estadoModulo(modulo, plano) !== "liberado") modulo.url_drive = "";
       return modulo;
-    });
+    })
+    // O que ela já tem vem primeiro; logo depois, o que o upgrade libera (as 150
+    // festas vêm na frente dos bônus pela "Ordem" do admin); depois os vendidos à
+    // parte e, por último, os "em breve". Dentro de cada grupo vale a "Ordem".
+    .sort((a, b) => PRIORIDADE[estadoModulo(a, plano)] - PRIORIDADE[estadoModulo(b, plano)]);
 
   return (
     <div className="space-y-6">
