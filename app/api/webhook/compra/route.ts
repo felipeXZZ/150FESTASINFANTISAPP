@@ -216,6 +216,13 @@ function idsDeProduto(payload: unknown) {
       if (id) ids.add(id);
     }
   }
+
+  // Se o gateway mandar o ID do checkout/oferta, ele também vale: um módulo
+  // avulso pode ser cadastrado no /admin pelo ID do checkout.
+  const checkout = texto(
+    pegar(payload, "checkout.id", "data.checkout.id", "checkout_id", "offer.id", "data.offer.id", "offer_id"),
+  );
+  if (checkout) ids.add(checkout);
   return [...ids];
 }
 

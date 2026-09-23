@@ -236,7 +236,7 @@ export function FormModulo({ modulo }: { modulo?: ModuloBanco }) {
                 onChange={(e) => mudar({ preco: e.target.value })}
               />
             </Campo>
-            <Campo rotulo="ID do produto na GGCheckout">
+            <Campo rotulo="ID do produto na GGCheckout (não do checkout)">
               <input
                 placeholder="Ex: 6jfVtbCkP0kG2phGqapy"
                 autoCapitalize="none"
