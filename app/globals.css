@@ -46,3 +46,109 @@
 @utility pt-seguro {
   padding-top: env(safe-area-inset-top);
 }
+
+/* Popups (<dialog class="popup">): centralizados, com entrada animada. */
+@keyframes popup-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fundo-entrar {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes item-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.popup[open] {
+  animation: popup-entrar 0.38s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+
+.popup[open]::backdrop {
+  animation: fundo-entrar 0.3s ease-out both;
+}
+
+/* Itens que aparecem em sequência dentro do popup (atraso via --atraso). */
+.popup[open] .entra {
+  animation: item-entrar 0.35s ease-out both;
+  animation-delay: var(--atraso, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup[open],
+  .popup[open]::backdrop,
+  .popup[open] .entra {
+    animation: none;
+  }
+}
+
+/* Troca de aba (app/(app)/template.tsx): a tela entra pelo lado da aba tocada. */
+@keyframes pagina-direita {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pagina-esquerda {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pagina-subir {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pagina-direita {
+  animation: pagina-direita 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.pagina-esquerda {
+  animation: pagina-esquerda 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.pagina-subir {
+  animation: pagina-subir 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pagina-direita,
+  .pagina-esquerda,
+  .pagina-subir {
+    animation: none;
+  }
+}

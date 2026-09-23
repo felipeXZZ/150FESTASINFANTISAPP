@@ -32,27 +32,26 @@ export function OfertaBiblioteca({ tituloId }: { tituloId?: string }) {
 
   return (
     <div className="flex flex-col">
-      <header className="relative overflow-hidden bg-marinho px-5 pt-5 pb-12 text-white">
+      <header className="relative overflow-hidden bg-marinho px-5 pt-5 pb-11 text-white">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-20 -right-16 size-64 rounded-full bg-azul/50 blur-3xl"
         />
-        <div className="relative pr-10">
-          <span className="inline-flex rounded-full bg-ouro px-3 py-1 text-xs font-semibold text-tinta">
+        <div className="relative pr-12">
+          <span className="inline-flex rounded-full bg-ouro px-2.5 py-0.5 text-[11px] font-semibold text-tinta">
             Biblioteca Visual da Decoradora
           </span>
-          <h2 id={tituloId} className="mt-2.5 font-titulo text-[1.45rem] leading-tight">
+          <h2 id={tituloId} className="mt-2 font-titulo text-[1.35rem] leading-tight">
             Calculadora de preço de festa
           </h2>
-          <p className="mt-1.5 text-sm text-azul-claro/90">
-            Faz parte da Biblioteca Visual: o preço certo de cada festa, com margem e taxas já
-            embutidas.
+          <p className="mt-1 text-[13px] leading-snug text-azul-claro/90">
+            O preço certo de cada festa, com margem e taxas já embutidas.
           </p>
         </div>
       </header>
 
       {/* Imagem da Biblioteca Visual: caixa, calculadora, orçamento e WhatsApp. */}
-      <div className="relative -mt-9 px-5">
+      <div className="relative -mt-8 px-5">
         <img
           src="/biblioteca-visual-800.webp"
           srcSet="/biblioteca-visual-480.webp 480w, /biblioteca-visual-800.webp 800w"
@@ -60,47 +59,51 @@ export function OfertaBiblioteca({ tituloId }: { tituloId?: string }) {
           width={800}
           height={600}
           alt="Biblioteca Visual da Decoradora de Festas: 300 projetos, calculadora de preço, orçamento e scripts de WhatsApp"
-          className="aspect-video w-full rounded-2xl border border-white/60 object-cover shadow-[0_14px_30px_-14px_rgba(11,30,91,0.55)]"
+          className="aspect-[2/1] w-full rounded-2xl border border-white/60 object-cover shadow-[0_14px_30px_-14px_rgba(11,30,91,0.55)]"
         />
       </div>
 
-      <div className="px-5 pt-4">
-        <p className="mb-2 text-xs font-semibold text-tinta-suave">O que vem na Biblioteca</p>
-        <ul className="grid grid-cols-2 gap-2">
-          {ITENS.map(({ Icone, texto }, i) => {
-            const destaque = i === 0;
-            return (
-              <li
-                key={texto}
-                className={`flex min-h-11 items-center gap-2.5 rounded-xl border px-2.5 py-1.5 ${
-                  destaque ? "border-azul bg-azul text-white" : "border-linha bg-white"
+      <ul className="grid grid-cols-3 gap-2 px-5 pt-4">
+        {ITENS.map(({ Icone, texto }, i) => {
+          const destaque = i === 0;
+          return (
+            <li
+              key={texto}
+              style={{ "--atraso": `${120 + i * 45}ms` } as React.CSSProperties}
+              className={`entra relative flex flex-col items-center gap-1.5 rounded-xl border px-1.5 pt-2.5 pb-2 text-center ${
+                destaque ? "border-azul bg-azul text-white" : "border-linha bg-white text-tinta"
+              }`}
+            >
+              {destaque && (
+                <span className="absolute -top-2 rounded-full bg-ouro px-1.5 py-px text-[10px] font-semibold text-tinta">
+                  inclusa
+                </span>
+              )}
+              <span
+                className={`grid size-8 place-items-center rounded-lg ${
+                  destaque ? "bg-white/15 text-white" : "bg-azul-claro text-azul"
                 }`}
               >
-                <span
-                  className={`grid size-8 shrink-0 place-items-center rounded-lg ${
-                    destaque ? "bg-white/15 text-white" : "bg-azul-claro text-azul"
-                  }`}
-                >
-                  <Icone className="size-[18px]" aria-hidden="true" />
-                </span>
-                <span className="text-[13px] leading-tight font-semibold">
-                  {texto}
-                  {destaque && <span className="block text-[11px] font-normal text-azul-claro">inclusa</span>}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+                <Icone className="size-[18px]" aria-hidden="true" />
+              </span>
+              <span className="text-[11.5px] leading-tight font-semibold">{texto}</span>
+            </li>
+          );
+        })}
+      </ul>
 
-      <div className="sticky bottom-0 bg-gradient-to-t from-papel from-80% to-transparent px-5 pt-4 pb-4">
+      <div style={{ "--atraso": "380ms" } as React.CSSProperties} className="entra sticky bottom-0 mt-1 bg-gradient-to-t from-papel from-85% to-transparent px-5 pt-4 pb-5">
+        {/* A Biblioteca é assinatura: o preço sai sempre com "/mês". */}
         {PRECO_BIBLIOTECA && (
-          <div className="mb-3 flex items-center justify-between gap-3 rounded-2xl border border-ouro/50 bg-ouro-claro px-4 py-2.5">
-            <span className="text-sm leading-tight text-tinta-suave">
-              Pagamento único
-              <span className="block font-semibold text-tinta">sem mensalidade</span>
+          <div className="mb-2.5 flex items-end justify-between gap-3 px-1">
+            <span className="text-xs leading-tight text-tinta-suave">
+              Assinatura mensal
+              <span className="block">cobrança todo mês</span>
             </span>
-            <span className="font-titulo text-3xl leading-none text-tinta">{PRECO_BIBLIOTECA}</span>
+            <span className="flex items-baseline gap-0.5 text-tinta">
+              <span className="font-titulo text-[1.75rem] leading-none">{PRECO_BIBLIOTECA}</span>
+              <span className="text-sm font-semibold text-tinta-suave">/mês</span>
+            </span>
           </div>
         )}
         {checkout && (
@@ -109,7 +112,7 @@ export function OfertaBiblioteca({ tituloId }: { tituloId?: string }) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => void registrarEvento("clicou_biblioteca", "checkout")}
-            className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-verde text-base font-semibold text-white shadow-[0_10px_24px_-10px_rgba(34,180,85,0.9)] active:bg-verde-compra-escuro"
+            className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-verde text-base font-semibold text-white shadow-[0_10px_24px_-10px_rgba(34,180,85,0.9)] active:bg-verde-compra-escuro"
           >
             Quero a Biblioteca Visual
             <ArrowRight className="size-5" aria-hidden="true" />

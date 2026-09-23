@@ -16,9 +16,9 @@ export function ModalUpgrade({ ref, bloqueados }: Props) {
       onClick={(e) => {
         if (e.target === e.currentTarget) e.currentTarget.close();
       }}
-      className="m-0 mt-auto max-h-[85dvh] w-full max-w-none rounded-t-3xl bg-papel p-0 text-tinta backdrop:bg-marinho/80 backdrop:backdrop-blur-[2px] sm:m-auto sm:max-w-md sm:rounded-3xl"
+      className="popup m-auto max-h-[88dvh] w-[calc(100%-2rem)] max-w-sm overflow-hidden rounded-3xl bg-papel p-0 text-tinta shadow-2xl backdrop:bg-marinho/80 backdrop:backdrop-blur-[2px]"
     >
-      <div className="pb-seguro flex max-h-[85dvh] flex-col">
+      <div className="flex max-h-[88dvh] flex-col">
         <div className="flex items-start justify-between gap-4 px-5 pt-5">
           <h2 id="titulo-upgrade" className="font-titulo text-2xl leading-tight">
             Tenha também os bônus

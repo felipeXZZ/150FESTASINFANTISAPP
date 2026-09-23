@@ -21,9 +21,17 @@ type Tipo = "basico" | "completo" | "upgrade";
 
 export async function POST(request: NextRequest) {
   const bruto = (await request.text()).slice(0, TAMANHO_MAXIMO);
-  const admin = createAdminClient();
+
+  // Falta de configuração não pode mascarar o 401 de quem não tem o segredo.
+  let admin: SupabaseClient | null = null;
+  try {
+    admin = createAdminClient();
+  } catch (e) {
+    console.error("[webhook]", e instanceof Error ? e.message : e);
+  }
 
   const log = async (status: string, extra: { detalhe?: string; email?: string; produto?: string } = {}) => {
+    if (!admin) return;
     const { error } = await admin.from("webhook_log").insert({ status, payload: bruto, ...extra });
     if (error) console.error("[webhook] log", error.message);
   };
@@ -31,6 +39,10 @@ export async function POST(request: NextRequest) {
   if (!segredoValido(request)) {
     await log("assinatura_invalida");
     return NextResponse.json({ erro: "segredo inválido" }, { status: 401 });
+  }
+  if (!admin) {
+    // 500 faz a GGCheckout tentar de novo depois que a chave for configurada.
+    return NextResponse.json({ erro: "servidor sem SUPABASE_SERVICE_ROLE_KEY" }, { status: 500 });
   }
 
   let payload: unknown;

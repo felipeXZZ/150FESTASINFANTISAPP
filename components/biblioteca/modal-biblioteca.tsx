@@ -16,9 +16,9 @@ export function ModalBiblioteca({ ref }: Props) {
       onClick={(e) => {
         if (e.target === e.currentTarget) e.currentTarget.close();
       }}
-      className="m-0 mt-auto max-h-[92dvh] w-full max-w-none overflow-hidden rounded-t-3xl bg-papel p-0 text-tinta backdrop:bg-marinho/80 backdrop:backdrop-blur-[2px] sm:m-auto sm:max-w-sm sm:rounded-3xl"
+      className="popup m-auto max-h-[88dvh] w-[calc(100%-2rem)] max-w-sm overflow-hidden rounded-3xl bg-papel p-0 text-tinta shadow-2xl backdrop:bg-marinho/80 backdrop:backdrop-blur-[2px]"
     >
-      <div className="pb-seguro relative max-h-[92dvh] overflow-y-auto">
+      <div className="relative max-h-[88dvh] overflow-y-auto bg-papel">
         <form method="dialog" className="absolute top-3 right-3 z-10">
           <button
             type="submit"

@@ -136,6 +136,15 @@ novo para ver os bônus.
 A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
 "(bloqueada)".
 
+**Animações** (em `app/globals.css`, todas desligadas com `prefers-reduced-motion`):
+
+- Troca de aba: `app/(app)/template.tsx` faz a tela entrar pelo lado da aba
+  tocada (`pagina-direita` / `pagina-esquerda`); na primeira tela, sobe de leve.
+- Barra: indicador azul desliza até a aba ativa e o ícone ativo cresce um pouco.
+- Popups (`<dialog class="popup">`): centralizados também no celular; o fundo
+  escurece, o popup sobe com um leve quique e os itens `.entra` aparecem em
+  sequência (atraso em `--atraso`).
+
 ---
 
 ## 7. Minhas festas (`/`)
@@ -165,7 +174,8 @@ Módulo bloqueado nunca some da tela.
 
 Não calcula nada. A aba da barra abre um popup (fundo escuro) e grava
 `viu_calculadora`. Imagem da Biblioteca (`public/biblioteca-visual-480/800.webp`),
-preço de `NEXT_PUBLIC_PRECO_BIBLIOTECA` e botão verde para
+mensalidade de `NEXT_PUBLIC_PRECO_BIBLIOTECA` (a Biblioteca é assinatura: o app
+mostra "/mês" e "Assinatura mensal") e botão verde para
 `NEXT_PUBLIC_BIBLIOTECA_CHECKOUT_URL` ("Quero a Biblioteca Visual", o app
 acrescenta `?origem=app-festas` e grava `clicou_biblioteca`). Só o link de
 pagamento, sem link para a página de vendas. Topo marinho curto, 6 blocos com ícone
