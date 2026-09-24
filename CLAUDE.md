@@ -87,10 +87,10 @@ Aplicar no SQL Editor do Supabase, nesta ordem:
 1. `supabase/schema.sql` — o schema da especificação (profiles, modulos, eventos).
 2. `supabase/02-acesso-webhook-admin.sql` — `compras`, `eventos_uso`,
    `webhook_log`, coluna `modulos.em_breve` e o bucket `capas`.
-3. `supabase/04-modulo-bloqueado.sql`, `05-so-basico.sql`, `06-compras-modulos.sql` e
-   `07-fechar-modulos.sql` (tira a leitura pública de `modulos`)
-   — colunas `bloqueado`, `checkout_url`, `preco`, `so_basico` e
-   `produtos_ggcheckout` de `modulos`, e a tabela `compras_modulos`.
+3. `supabase/04-modulo-bloqueado.sql`, `05-so-basico.sql`, `06-compras-modulos.sql`,
+   `07-fechar-modulos.sql` (tira a leitura pública de `modulos`) e `08-destaque.sql`
+   — colunas `bloqueado`, `checkout_url`, `preco`, `so_basico`,
+   `produtos_ggcheckout` e `destaque` de `modulos`, e a tabela `compras_modulos`.
 4. `supabase/03-modulos-exemplo.sql` (opcional) — 2 módulos: as festas e os 5 bônus juntos, com URL
    do Drive a trocar.
 
@@ -180,6 +180,11 @@ A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
    - só para o Básico (`so_basico`, em `supabase/05-so-basico.sql`): aparece para
      o plano básico e some para quem tem o Completo (ex: as 50 festas, que já
      estão dentro das 150).
+   - destaque especial (`destaque`, em `supabase/08-destaque.sql`): vale para o
+     bloqueado vendido à parte. Card na largura toda, capa colorida, borda
+     dourada, selo "Oferta especial" e botão verde "Quero por R$ X"; vem na
+     frente dos outros vendidos à parte (ex: o Pacote Leve Todos). Depois de
+     comprado, vira card comum.
    - Todo card que a cliente não pode abrir sai sem `url_drive` do servidor.
 
 Módulo bloqueado nunca some da tela.

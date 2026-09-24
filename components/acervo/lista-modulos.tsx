@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Clock, FolderOpen, ImageOff, Lock } from "lucide-react";
+import { Clock, FolderOpen, ImageOff, Lock, Sparkles } from "lucide-react";
 import { registrarEvento } from "@/app/(app)/acervo-actions";
 import { srcSetImagem, urlImagem } from "@/lib/imagem";
 import { estadoModulo, precoLegivel, type EstadoModulo, type Modulo, type Plano, type TipoEvento } from "@/lib/tipos";
@@ -46,12 +46,18 @@ export function ListaModulos({ modulos, plano }: Props) {
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {modulos.map((modulo, i) => {
           const estado = estadoModulo(modulo, plano);
-          const conteudo = <ConteudoCard modulo={modulo} estado={estado} prioridade={i < 2} />;
-          const classe =
-            "block w-full overflow-hidden rounded-2xl border border-linha bg-white text-left transition active:scale-[0.99]";
+          const especial = modulo.destaque && estado === "bloqueado_venda";
+          const conteudo = especial ? (
+            <ConteudoEspecial modulo={modulo} prioridade={i < 2} />
+          ) : (
+            <ConteudoCard modulo={modulo} estado={estado} prioridade={i < 2} />
+          );
+          const classe = especial
+            ? "block w-full overflow-hidden rounded-2xl border-2 border-ouro bg-ouro-claro text-left shadow-lg shadow-ouro/25 transition active:scale-[0.99]"
+            : "block w-full overflow-hidden rounded-2xl border border-linha bg-white text-left transition active:scale-[0.99]";
 
           return (
-            <li key={modulo.id}>
+            <li key={modulo.id} className={especial ? "sm:col-span-2 lg:col-span-3" : undefined}>
               {estado === "em_breve" ? (
                 // Não abre nada: só mostra que vem mais conteúdo.
                 <div className="block w-full overflow-hidden rounded-2xl border border-linha bg-white">
@@ -80,6 +86,55 @@ export function ListaModulos({ modulos, plano }: Props) {
       {doPlano.length > 0 && <ModalUpgrade ref={upgradeRef} bloqueados={doPlano} />}
       <ModalCompra ref={compraRef} modulo={emCompra} />
     </>
+  );
+}
+
+/** Oferta em destaque: capa colorida, selo dourado e botão verde de compra. */
+function ConteudoEspecial({ modulo, prioridade }: { modulo: Modulo; prioridade: boolean }) {
+  const src = urlImagem(modulo.capa_url, 960);
+  const preco = precoLegivel(modulo.preco);
+
+  return (
+    <div className="sm:flex">
+      <div className="relative aspect-video bg-linha/60 sm:w-1/2 sm:shrink-0">
+        {src ? (
+          <img
+            src={src}
+            srcSet={srcSetImagem(modulo.capa_url, [400, 640, 960])}
+            sizes="(min-width: 640px) 50vw, 100vw"
+            alt=""
+            loading={prioridade ? "eager" : "lazy"}
+            decoding="async"
+            className="size-full object-cover"
+          />
+        ) : (
+          <div className="grid size-full place-items-center text-tinta/30">
+            <ImageOff className="size-8" aria-hidden="true" />
+          </div>
+        )}
+
+        <span className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-ouro px-3 py-1.5 text-sm font-semibold text-tinta shadow-md">
+          <Sparkles className="size-4" aria-hidden="true" />
+          Oferta especial
+        </span>
+        {modulo.contador && (
+          <span className="absolute right-3 bottom-3 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-tinta shadow-sm">
+            {modulo.contador}
+          </span>
+        )}
+      </div>
+
+      <div className="flex flex-col justify-center gap-3 px-4 py-4 sm:px-5">
+        <div>
+          <h3 className="font-titulo text-lg leading-snug text-tinta">{modulo.titulo}</h3>
+          {modulo.descricao && <p className="mt-1 text-sm text-tinta-suave">{modulo.descricao}</p>}
+        </div>
+        <span className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-verde px-4 text-base font-semibold text-white shadow-sm">
+          <Lock className="size-4" strokeWidth={2.25} aria-hidden="true" />
+          {preco ? `Quero por ${preco}` : "Quero essa oferta"}
+        </span>
+      </div>
+    </div>
   );
 }
 

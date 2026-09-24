@@ -17,6 +17,7 @@ type Linha = {
   em_breve: boolean;
   bloqueado?: boolean;
   so_basico?: boolean;
+  destaque?: boolean;
 };
 
 export default async function AdminPage() {
@@ -71,6 +72,7 @@ export default async function AdminPage() {
                       {m.em_breve ? " · em breve" : ""}
                       {m.bloqueado ? " · bloqueado" : ""}
                       {m.so_basico ? " · só básico" : ""}
+                      {m.destaque ? " · destaque" : ""}
                       {m.ativo ? "" : " · inativo"}
                     </p>
                   </div>

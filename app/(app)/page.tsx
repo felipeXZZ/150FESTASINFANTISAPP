@@ -44,6 +44,7 @@ export default async function MinhasFestasPage() {
         checkout_url: m.checkout_url ?? null,
         preco: m.preco ?? null,
         so_basico: Boolean(m.so_basico),
+        destaque: Boolean(m.destaque),
         produtos_ggcheckout: null, // fica no servidor
       };
       // Módulo avulso comprado (ou acesso total): abre, qualquer que seja o plano.
@@ -57,8 +58,13 @@ export default async function MinhasFestasPage() {
     })
     // O que ela já tem vem primeiro; logo depois, o que o upgrade libera (as 150
     // festas vêm na frente dos bônus pela "Ordem" do admin); depois os vendidos à
-    // parte e, por último, os "em breve". Dentro de cada grupo vale a "Ordem".
-    .sort((a, b) => PRIORIDADE[estadoModulo(a, plano)] - PRIORIDADE[estadoModulo(b, plano)]);
+    // parte (o destaque na frente) e, por último, os "em breve". Dentro de cada
+    // grupo vale a "Ordem".
+    .sort(
+      (a, b) =>
+        PRIORIDADE[estadoModulo(a, plano)] - PRIORIDADE[estadoModulo(b, plano)] ||
+        Number(b.destaque) - Number(a.destaque),
+    );
 
   return (
     <div className="space-y-6">

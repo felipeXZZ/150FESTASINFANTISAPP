@@ -23,6 +23,7 @@ type ModuloBanco = {
   checkout_url?: string | null;
   preco?: string | null;
   so_basico?: boolean | null;
+  destaque?: boolean | null;
   produtos_ggcheckout?: string | null;
 };
 
@@ -46,6 +47,7 @@ export function FormModulo({ modulo }: { modulo?: ModuloBanco }) {
     checkout_url: modulo?.checkout_url ?? "",
     preco: modulo?.preco ?? "",
     so_basico: modulo?.so_basico ?? false,
+    destaque: modulo?.destaque ?? false,
     produtos_ggcheckout: modulo?.produtos_ggcheckout ?? "",
   });
   const [arquivo, setArquivo] = useState<File | null>(null);
@@ -195,6 +197,21 @@ export function FormModulo({ modulo }: { modulo?: ModuloBanco }) {
           <span className="block font-semibold">Só para o Básico</span>
           <span className="block text-sm text-tinta/60">
             Some para quem tem o Pacote Completo. Use no que já está dentro do Completo, como as 50 festas.
+          </span>
+        </span>
+      </label>
+
+      <label className="flex min-h-12 items-center gap-3 rounded-xl border border-linha bg-white px-3 py-2">
+        <input
+          type="checkbox"
+          className="size-5 accent-azul"
+          checked={dados.destaque}
+          onChange={(e) => mudar({ destaque: e.target.checked })}
+        />
+        <span>
+          <span className="block font-semibold">Destaque especial</span>
+          <span className="block text-sm text-tinta/60">
+            Card colorido, com borda dourada e selo “Oferta especial”, na frente dos outros vendidos à parte.
           </span>
         </span>
       </label>

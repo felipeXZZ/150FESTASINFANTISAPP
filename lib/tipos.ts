@@ -18,6 +18,8 @@ export type Modulo = {
   preco: string | null;
   /** Só aparece para o plano básico; quem tem o Completo não vê (ex: as 50 festas). */
   so_basico: boolean;
+  /** Oferta em destaque: card colorido, borda dourada, na frente dos outros vendidos à parte. */
+  destaque: boolean;
   /** IDs de produto da GGCheckout que liberam este módulo avulso (separados por vírgula). */
   produtos_ggcheckout: string | null;
 };

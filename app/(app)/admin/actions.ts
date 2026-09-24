@@ -20,6 +20,7 @@ export type DadosModulo = {
   checkout_url: string;
   preco: string;
   so_basico: boolean;
+  destaque: boolean;
   produtos_ggcheckout: string;
 };
 
@@ -60,6 +61,7 @@ export async function salvarModulo(d: DadosModulo): Promise<Resposta> {
     checkout_url: checkout || null,
     preco: d.preco.trim().slice(0, 30) || null,
     so_basico: Boolean(d.so_basico),
+    destaque: Boolean(d.destaque),
     // IDs da GGCheckout: só letras e números, separados por vírgula.
     produtos_ggcheckout:
       d.produtos_ggcheckout
