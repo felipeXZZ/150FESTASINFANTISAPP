@@ -40,7 +40,8 @@ material.** Essa frase decide todo empate de layout.
 - Next.js 16 (App Router) + TypeScript
 - Tailwind CSS 4
 - Supabase — Postgres com RLS e Storage (Auth não é usado; ver seção 5)
-- Deploy na Vercel
+- Deploy na Vercel, funções em São Paulo (`vercel.json`, `gru1`), perto do
+  Supabase e das clientes. No padrão (`iad1`, EUA) cada consulta cruza o continente.
 - PWA instalável na tela inicial
 
 ### Regras fixas

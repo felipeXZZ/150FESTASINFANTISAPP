@@ -16,16 +16,14 @@ export default async function MinhasFestasPage() {
   const sessao = await exigirSessao();
   // Plano e módulos avulsos vêm do banco a cada abertura: compra aprovada pelo
   // webhook aparece na hora, sem sair e entrar de novo.
-  const { plano, modulosComprados, acessoTotal } = await carregarAcesso(sessao);
-
-  // Lido só no servidor, com a service role: a tabela não é pública (SQL 07),
-  // senão qualquer um com a chave pública veria todos os links do Drive.
-  // "*": se algum SQL de coluna nova ainda não rodou, a coluna só vem vazia.
-  const { data, error } = await createAdminClient()
-    .from("modulos")
-    .select("*")
-    .eq("ativo", true)
-    .order("ordem", { ascending: true });
+  // As duas consultas saem juntas: uma ida ao banco em vez de duas em fila.
+  const [{ plano, modulosComprados, acessoTotal }, { data, error }] = await Promise.all([
+    carregarAcesso(sessao),
+    // Lido só no servidor, com a service role: a tabela não é pública (SQL 07),
+    // senão qualquer um com a chave pública veria todos os links do Drive.
+    // "*": se algum SQL de coluna nova ainda não rodou, a coluna só vem vazia.
+    createAdminClient().from("modulos").select("*").eq("ativo", true).order("ordem", { ascending: true }),
+  ]);
 
   if (error) console.error("[acervo] modulos", error.message);
   const modulos = ((data ?? []) as Partial<Modulo>[])
