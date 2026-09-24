@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { temAcessoTotal } from "@/lib/admin";
 import type { Sessao } from "@/lib/sessao";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Plano } from "@/lib/tipos";
@@ -8,6 +9,8 @@ export type Acesso = {
   plano: Plano;
   /** Módulos avulsos que ela comprou (IDs de `modulos`). */
   modulosComprados: Set<string>;
+  /** E-mail de ACESSO_TOTAL_EMAILS: todos os módulos e a calculadora abertos. */
+  acessoTotal: boolean;
 };
 
 /**
@@ -17,7 +20,12 @@ export type Acesso = {
  * cookie: nunca tranca a cliente fora por causa de uma consulta.
  */
 export async function carregarAcesso(sessao: Sessao): Promise<Acesso> {
-  const reserva: Acesso = { plano: sessao.plano, modulosComprados: new Set() };
+  // Acesso total não depende de compra: nunca é suspenso nem rebaixado.
+  if (temAcessoTotal(sessao.email)) {
+    return { plano: "completo", modulosComprados: new Set(), acessoTotal: true };
+  }
+
+  const reserva: Acesso = { plano: sessao.plano, modulosComprados: new Set(), acessoTotal: false };
   let suspenso = false;
   let acesso = reserva;
 
@@ -37,6 +45,7 @@ export async function carregarAcesso(sessao: Sessao): Promise<Acesso> {
       acesso = {
         plano: compra.data.plano === "completo" ? "completo" : "basico",
         modulosComprados: new Set((modulos.data ?? []).map((m) => m.modulo_id as string)),
+        acessoTotal: false,
       };
     }
   } catch (e) {

@@ -1,8 +1,12 @@
 import { Header } from "@/components/header";
 import { BarraNavegacao } from "@/components/barra-navegacao";
 import { FaixaInstalar } from "@/components/pwa";
+import { temAcessoTotal } from "@/lib/admin";
+import { getSessao } from "@/lib/sessao";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({ children }: { children: React.ReactNode }) {
+  const sessao = await getSessao();
+
   return (
     <>
       <Header />
@@ -10,7 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <FaixaInstalar />
-      <BarraNavegacao />
+      <BarraNavegacao calculadoraLiberada={temAcessoTotal(sessao?.email)} />
     </>
   );
 }

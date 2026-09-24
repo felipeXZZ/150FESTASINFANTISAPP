@@ -203,6 +203,12 @@ como recurso trancado dá sensação de produto incompleto e gera reembolso. É
 outro produto, de outro público. Nenhum texto dessa tela pode usar
 "desbloquear", "liberar" ou "seu acesso".
 
+**Acesso total** (`ACESSO_TOTAL_EMAILS`, `temAcessoTotal` em `lib/admin.ts`):
+esses e-mails entram sem compra, contam como Completo, abrem todos os módulos
+(inclusive os avulsos) e a aba Calculadora vira link comum, sem cadeado nem selo,
+para a calculadora de verdade (`components/calculadora/`, vinda do Kit, com
+histórico no aparelho em `/historico`). Para todos os outros nada muda.
+
 ---
 
 ## 9. Conta (`/conta`)
@@ -296,6 +302,7 @@ WEBHOOK_PRODUTO_PADRAO=
 WEBHOOK_VALOR_MIN_COMPLETO=
 WEBHOOK_VALOR_UPGRADE=
 ADMIN_EMAILS=
+ACESSO_TOTAL_EMAILS=
 ```
 
 ---

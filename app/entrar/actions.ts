@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { temAcessoTotal } from "@/lib/admin";
 import { COOKIE_SESSAO, criarValorCookie, OPCOES_COOKIE } from "@/lib/sessao";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Plano } from "@/lib/tipos";
@@ -42,16 +43,20 @@ export async function entrar(_: EstadoEntrada, formData: FormData): Promise<Esta
     };
   }
 
-  if (!data) return { status: "sem_compra", email };
-  if (!data.ativo) return { status: "bloqueado", email };
+  // ACESSO_TOTAL_EMAILS entra mesmo sem compra (ou com ela suspensa).
+  const total = temAcessoTotal(email);
+  if (!total) {
+    if (!data) return { status: "sem_compra", email };
+    if (!data.ativo) return { status: "bloqueado", email };
+  }
 
   const store = await cookies();
   store.set(
     COOKIE_SESSAO,
     await criarValorCookie({
-      email: data.email,
-      nome: data.nome,
-      plano: (data.plano === "completo" ? "completo" : "basico") as Plano,
+      email,
+      nome: data?.nome ?? null,
+      plano: (total || data?.plano === "completo" ? "completo" : "basico") as Plano,
     }),
     OPCOES_COOKIE,
   );

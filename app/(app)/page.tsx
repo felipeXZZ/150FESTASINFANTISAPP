@@ -16,7 +16,7 @@ export default async function MinhasFestasPage() {
   const sessao = await exigirSessao();
   // Plano e módulos avulsos vêm do banco a cada abertura: compra aprovada pelo
   // webhook aparece na hora, sem sair e entrar de novo.
-  const { plano, modulosComprados } = await carregarAcesso(sessao);
+  const { plano, modulosComprados, acessoTotal } = await carregarAcesso(sessao);
 
   // Lido só no servidor, com a service role: a tabela não é pública (SQL 07),
   // senão qualquer um com a chave pública veria todos os links do Drive.
@@ -48,8 +48,8 @@ export default async function MinhasFestasPage() {
         so_basico: Boolean(m.so_basico),
         produtos_ggcheckout: null, // fica no servidor
       };
-      // Módulo avulso comprado: abre para ela, qualquer que seja o plano.
-      if (modulosComprados.has(modulo.id)) {
+      // Módulo avulso comprado (ou acesso total): abre, qualquer que seja o plano.
+      if (acessoTotal || modulosComprados.has(modulo.id)) {
         modulo.bloqueado = false;
         modulo.plano_minimo = "basico";
       }

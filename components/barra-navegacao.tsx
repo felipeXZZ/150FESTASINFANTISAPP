@@ -14,7 +14,8 @@ const cor = (ativa: boolean) => (ativa ? "font-semibold text-azul" : "text-tinta
 const icone = (ativa: boolean) =>
   `size-6 transition-transform duration-300 ease-out ${ativa ? "scale-110" : "scale-100"}`;
 
-export function BarraNavegacao() {
+/** `calculadoraLiberada`: acesso total, a aba abre a calculadora de verdade em vez da oferta. */
+export function BarraNavegacao({ calculadoraLiberada = false }: { calculadoraLiberada?: boolean }) {
   const pathname = usePathname();
   const modalRef = useRef<HTMLDialogElement>(null);
   // Posição do indicador azul que desliza até a aba ativa.
@@ -52,6 +53,20 @@ export function BarraNavegacao() {
             {/* A Calculadora é da Biblioteca Visual, outro produto: abre um popup com a
                 oferta. Na barra leva só um cadeado pequeno, nunca "bloqueada" escrito. */}
             <li>
+              {calculadoraLiberada ? (
+                <Link
+                  href="/calculadora"
+                  aria-current={pathname.startsWith("/calculadora") ? "page" : undefined}
+                  className={`${ABA} ${cor(pathname.startsWith("/calculadora"))}`}
+                >
+                  <Calculator
+                    className={icone(pathname.startsWith("/calculadora"))}
+                    strokeWidth={pathname.startsWith("/calculadora") ? 2.25 : 1.75}
+                    aria-hidden="true"
+                  />
+                  Calculadora
+                </Link>
+              ) : (
               <button
                 type="button"
                 onClick={abrirCalculadora}
@@ -76,6 +91,7 @@ export function BarraNavegacao() {
                   <Lock className="size-3 text-ouro" strokeWidth={2.5} aria-hidden="true" />
                 </span>
               </button>
+              )}
             </li>
 
             <li>
