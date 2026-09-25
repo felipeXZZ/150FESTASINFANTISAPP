@@ -22,8 +22,8 @@ uma pasta no Google Drive.
 
 Dois planos de acesso vitalício, sem recorrência:
 
-- `basico` — os projetos de festa infantil (R$ 10 na página de vendas)
-- `completo` — os projetos + os 5 bônus (R$ 29,90): Manual de Montagem Passo a
+- `basico` — os projetos de festa infantil (R$ 5,99 na página de vendas)
+- `completo` — os projetos + os 5 bônus (R$ 19,90): Manual de Montagem Passo a
   Passo, Checklist de Compras da Festa, Guia Prático de Balões, Cronograma da
   Festa Sem Correria, 50 Ideias de Lembrancinhas Econômicas
 
@@ -247,10 +247,10 @@ cache-primeiro. Faixa "Instale na tela inicial e use como aplicativo" com
 - Plano: primeiro pelos IDs em `WEBHOOK_PRODUTOS_BASICO/_COMPLETO/_UPGRADE`
   (olha `product.id` e `products[].id`, vale o maior). Sem ID conhecido, pelo
   valor pago: perto de `WEBHOOK_VALOR_UPGRADE` = upgrade; a partir de
-  `WEBHOOK_VALOR_MIN_COMPLETO` (16 em produção) = completo; abaixo = básico.
-  Checkouts que usam este webhook: Básico R$ 10 (`dHBGUyfqTCc1FSzI0XPk`, produto
+  `WEBHOOK_VALOR_MIN_COMPLETO` (8 em produção) = completo; abaixo = básico.
+  Checkouts que usam este webhook: Básico R$ 5,99 (`dHBGUyfqTCc1FSzI0XPk`, produto
   "150 Festas Infantis: Copiar e Colar" `AhcuLW7B0yATLyaYSdK5`, em `WEBHOOK_PRODUTOS_BASICO`),
-  Completo R$ 29,90 (`TrDo8Xg6jiuCWxmTrXEi`), upsell do popup R$ 17,90
+  Completo R$ 19,90 (`TrDo8Xg6jiuCWxmTrXEi`), upsell do popup R$ 10,00
   (`GwyvIf2cHvXUvPxPInpC`) e upgrade no app R$ 6,90 (`NuTIRfsxypFzjKAOivEi`).
   A oferta de R$ 12,90 (`je3Zk5rzT1MvKP5imfgR`) não é mais usada. Os do Completo ficam no mesmo
   produto da GGCheckout (`6jfVtbCkP0kG2phGqapy`, em `WEBHOOK_PRODUTOS_COMPLETO`).

@@ -230,8 +230,8 @@ function idsDeProduto(payload: unknown) {
 function valorEmReais(v: unknown) {
   const n = typeof v === "string" ? Number(v.replace(",", ".")) : Number(v);
   if (!Number.isFinite(n) || n <= 0) return null;
-  // A GGCheckout manda centavos (R$ 10,00 = 1000). Nenhum produto daqui custa
-  // R$ 100 ou mais, então inteiro a partir de 100 é centavo; 10 ou 29.9 é real.
+  // A GGCheckout manda centavos (R$ 5,99 = 599). Nenhum produto daqui custa
+  // R$ 100 ou mais, então inteiro a partir de 100 é centavo; 10 ou 19.9 é real.
   return Number.isInteger(n) && n >= 100 ? n / 100 : n;
 }
 
@@ -267,7 +267,7 @@ function tipoDaCompra(ids: string[], valor: number | null): Tipo | null {
     // upgrade configurado, esse passo é pulado.
     const upgrade = numero("WEBHOOK_VALOR_UPGRADE", 0);
     if (upgrade > 0 && Math.abs(valor - upgrade) < 0.5) return "upgrade";
-    if (valor >= numero("WEBHOOK_VALOR_MIN_COMPLETO", 20)) return "completo";
+    if (valor >= numero("WEBHOOK_VALOR_MIN_COMPLETO", 8)) return "completo";
     return "basico";
   }
 
