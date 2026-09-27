@@ -163,7 +163,10 @@ A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
    ela já tem; o que o upgrade libera (as 150 festas antes dos bônus); os vendidos
    à parte; os "em breve". Dentro de cada grupo vale a `ordem` do admin.
    - liberado (`completo` vê tudo; `basico` vê `plano_minimo = 'basico'`): abre
-     `url_drive` em nova aba e grava `abriu_modulo`;
+     o popup do módulo (`components/acervo/modal-modulo.tsx`) com a capa, o selo
+     "Já é seu" e duas opções: "Baixar no aparelho" (download direto do arquivo,
+     `lib/drive.ts`; só aparece quando `url_drive` é um arquivo do Drive, não
+     pasta) e "Abrir no Google Drive" (nova aba). As duas gravam `abriu_modulo`;
    - bloqueado pelo plano: capa em preto e branco, cadeado dourado, "Disponível no Pacote
      Completo". Ao tocar grava `viu_bloqueado` e abre o popup de upgrade, no
      estilo do da Biblioteca: topo marinho, imagem do guia com os 5 bônus

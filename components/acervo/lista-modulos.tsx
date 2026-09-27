@@ -6,6 +6,7 @@ import { registrarEvento } from "@/app/(app)/acervo-actions";
 import { srcSetImagem, urlImagem } from "@/lib/imagem";
 import { estadoModulo, precoLegivel, type EstadoModulo, type Modulo, type Plano, type TipoEvento } from "@/lib/tipos";
 import { ModalCompra } from "./modal-compra";
+import { ModalModulo } from "./modal-modulo";
 import { ModalUpgrade } from "./modal-upgrade";
 
 type Props = { modulos: Modulo[]; plano: Plano };
@@ -13,12 +14,20 @@ type Props = { modulos: Modulo[]; plano: Plano };
 export function ListaModulos({ modulos, plano }: Props) {
   const upgradeRef = useRef<HTMLDialogElement>(null);
   const compraRef = useRef<HTMLDialogElement>(null);
+  const moduloRef = useRef<HTMLDialogElement>(null);
   const [emCompra, setEmCompra] = useState<Modulo | null>(null);
+  const [aberto, setAberto] = useState<Modulo | null>(null);
   const doPlano = modulos.filter((m) => estadoModulo(m, plano) === "bloqueado_plano");
 
   function registrar(tipo: TipoEvento, ref: string) {
     // Dispara e segue: a navegação não espera o registro.
     void registrarEvento(tipo, ref);
+  }
+
+  function abrirLiberado(modulo: Modulo) {
+    setAberto(modulo);
+    // O dialog precisa do módulo já renderizado antes de abrir.
+    requestAnimationFrame(() => moduloRef.current?.showModal());
   }
 
   function abrirBloqueado(modulo: Modulo, estado: EstadoModulo) {
@@ -64,15 +73,9 @@ export function ListaModulos({ modulos, plano }: Props) {
                   {conteudo}
                 </div>
               ) : estado === "liberado" ? (
-                <a
-                  href={modulo.url_drive}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => registrar("abriu_modulo", modulo.id)}
-                  className={classe}
-                >
+                <button type="button" onClick={() => abrirLiberado(modulo)} className={classe}>
                   {conteudo}
-                </a>
+                </button>
               ) : (
                 <button type="button" onClick={() => abrirBloqueado(modulo, estado)} className={classe}>
                   {conteudo}
@@ -85,6 +88,7 @@ export function ListaModulos({ modulos, plano }: Props) {
 
       {doPlano.length > 0 && <ModalUpgrade ref={upgradeRef} bloqueados={doPlano} />}
       <ModalCompra ref={compraRef} modulo={emCompra} />
+      <ModalModulo ref={moduloRef} modulo={aberto} aoAbrir={(m) => registrar("abriu_modulo", m.id)} />
     </>
   );
 }
