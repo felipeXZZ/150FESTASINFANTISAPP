@@ -20,6 +20,39 @@ export const BIBLIOTECA_CHECKOUT_URL = process.env.NEXT_PUBLIC_BIBLIOTECA_CHECKO
 /** Texto livre, ex: "R$ 14,90". Vazio = o popup sai sem preço. */
 export const PRECO_BIBLIOTECA = (process.env.NEXT_PUBLIC_PRECO_BIBLIOTECA ?? "").trim();
 
+/** "🎁OFERTA ESPECIAL — PACOTE LEVE TODOS" -> "oferta-especial-pacote-leve-todos" */
+function slug(texto: string) {
+  return texto
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+/**
+ * Marca um link de compra aberto de dentro do app. As UTMs chegam na GGCheckout
+ * e na Utmify, que mostram a venda como vinda do aplicativo:
+ * utm_source=app-festas, utm_medium=aplicativo, utm_campaign = a oferta,
+ * utm_content = onde ela tocou (ou o módulo). Sobrescreve UTMs que já estejam no link.
+ */
+export function comUtm(endereco: string, campanha: string, conteudo = "") {
+  if (!endereco) return "";
+  try {
+    const url = new URL(endereco);
+    url.searchParams.set("utm_source", "app-festas");
+    url.searchParams.set("utm_medium", "aplicativo");
+    url.searchParams.set("utm_campaign", campanha);
+    if (conteudo) url.searchParams.set("utm_content", slug(conteudo));
+    else url.searchParams.delete("utm_content");
+    url.searchParams.set("src", "app-festas");
+    return url.toString();
+  } catch {
+    return endereco;
+  }
+}
+
 /** Garante o ?origem=app-festas, que mede as vendas da Biblioteca vindas daqui. */
 function comOrigem(endereco: string) {
   if (!endereco) return "";
@@ -36,7 +69,12 @@ function comOrigem(endereco: string) {
 export const linkBiblioteca = () => comOrigem(BIBLIOTECA_URL);
 
 /** Checkout da Biblioteca; sem ele, o botão principal vai para a página de vendas. */
-export const linkCheckoutBiblioteca = () => comOrigem(BIBLIOTECA_CHECKOUT_URL) || linkBiblioteca();
+export const linkCheckoutBiblioteca = () =>
+  comUtm(comOrigem(BIBLIOTECA_CHECKOUT_URL), "biblioteca-visual", "aba-calculadora") || linkBiblioteca();
+
+/** Checkout do upgrade para o Pacote Completo, com as UTMs do app. */
+export const linkCheckoutUpgrade = (conteudo = "popup-upgrade") =>
+  comUtm(CHECKOUT_UPGRADE_URL, "upgrade-completo", conteudo);
 
 /** Do link do perfil tira o @: .../decorar.semcomplicacao/ -> @decorar.semcomplicacao */
 export function arrobaInstagram(url = INSTAGRAM_URL) {

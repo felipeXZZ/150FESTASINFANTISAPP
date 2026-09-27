@@ -2,7 +2,7 @@
 
 import type { Ref } from "react";
 import { ArrowRight, ImageOff, Lock, X } from "lucide-react";
-import { CHECKOUT_UPGRADE_URL } from "@/lib/config";
+import { comUtm, linkCheckoutUpgrade } from "@/lib/config";
 import { urlImagem } from "@/lib/imagem";
 import { precoLegivel, type Modulo } from "@/lib/tipos";
 
@@ -11,7 +11,10 @@ type Props = { ref: Ref<HTMLDialogElement>; modulo: Modulo | null };
 /** Popup de pagamento de um módulo vendido à parte (opção "Bloqueado" do admin). */
 export function ModalCompra({ ref, modulo }: Props) {
   const capa = urlImagem(modulo?.capa_url, 640);
-  const checkout = modulo?.checkout_url || CHECKOUT_UPGRADE_URL;
+  // Módulo sem link próprio usa o checkout do upgrade; as UTMs dizem qual card levou à compra.
+  const checkout = modulo?.checkout_url
+    ? comUtm(modulo.checkout_url, "modulo-avulso", modulo.titulo)
+    : linkCheckoutUpgrade(modulo?.titulo);
 
   return (
     <dialog

@@ -12,10 +12,11 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-import { CHECKOUT_UPGRADE_URL, PRECO_UPGRADE } from "@/lib/config";
+import { linkCheckoutUpgrade, PRECO_UPGRADE } from "@/lib/config";
 import type { Modulo } from "@/lib/tipos";
 
-type Props = { ref: Ref<HTMLDialogElement>; bloqueados?: Modulo[] };
+/** origem vira o utm_content do checkout: de onde ela abriu o popup. */
+type Props = { ref: Ref<HTMLDialogElement>; bloqueados?: Modulo[]; origem?: string };
 
 // O que o Pacote Completo acrescenta ao Básico: as festas que faltam e os 5 bônus.
 // A primeira vem em destaque, como a calculadora no popup da Biblioteca.
@@ -29,7 +30,7 @@ const ITENS: { Icone: LucideIcon; texto: string }[] = [
 ];
 
 /** Popup de upgrade (Básico → Pacote Completo), no mesmo estilo do da Biblioteca. */
-export function ModalUpgrade({ ref, bloqueados = [] }: Props) {
+export function ModalUpgrade({ ref, bloqueados = [], origem = "card-bloqueado" }: Props) {
   return (
     <dialog
       ref={ref}
@@ -132,7 +133,7 @@ export function ModalUpgrade({ ref, bloqueados = [] }: Props) {
             </div>
           )}
           <a
-            href={CHECKOUT_UPGRADE_URL}
+            href={linkCheckoutUpgrade(origem)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-verde text-base font-semibold text-white shadow-[0_10px_24px_-10px_rgba(34,180,85,0.9)] active:bg-verde-compra-escuro"

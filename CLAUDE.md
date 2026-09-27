@@ -192,6 +192,14 @@ A aba Calculadora leva um pequeno cadeado ao lado do rótulo — nunca o texto
 
 Módulo bloqueado nunca some da tela.
 
+**UTMs das vendas do app** (`comUtm` em `lib/config.ts`): todo link de compra
+aberto aqui dentro leva `utm_source=app-festas`, `utm_medium=aplicativo` e
+`src=app-festas`, para a GGCheckout e a Utmify separarem essas vendas das do
+Meta Ads. `utm_campaign` diz a oferta (`upgrade-completo`, `modulo-avulso`,
+`biblioteca-visual`) e `utm_content` diz de onde ela tocou (`card-bloqueado`,
+`conta`, `aba-calculadora`) ou qual módulo avulso (título em slug). As UTMs que
+já estiverem no link são trocadas pelas do app.
+
 ---
 
 ## 8. Calculadora (`/calculadora`) — outro produto

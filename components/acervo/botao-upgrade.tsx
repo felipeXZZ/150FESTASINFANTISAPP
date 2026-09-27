@@ -22,7 +22,7 @@ export function BotaoUpgrade({ className = "" }: { className?: string }) {
       >
         {TEXTO_BOTAO_UPGRADE}
       </button>
-      <ModalUpgrade ref={modalRef} />
+      <ModalUpgrade ref={modalRef} origem="conta" />
     </>
   );
 }
