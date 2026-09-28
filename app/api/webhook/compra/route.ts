@@ -124,7 +124,7 @@ async function liberarAcesso(
 
   const { data: existente, error: erroBusca } = await admin
     .from("compras")
-    .select("id, plano, nome, pagamento_id")
+    .select("id, plano, nome, pagamento_id, ativo")
     .eq("email", email)
     .maybeSingle();
   if (erroBusca) throw new Error(`busca compra: ${erroBusca.message}`);
@@ -143,7 +143,8 @@ async function liberarAcesso(
     email,
     nome: existente?.nome || nome || null,
     plano,
-    ativo: true,
+    // Suspensão manual (ativo = false) vale mesmo que ela pague de novo.
+    ativo: existente?.ativo !== false,
     pagamento_id: pagamentoId ?? null,
     atualizado_em: new Date().toISOString(),
   };
@@ -151,6 +152,7 @@ async function liberarAcesso(
   const { error } = await admin.from("compras").upsert(registro, { onConflict: "email" });
   if (error) throw new Error(`grava compra: ${error.message}`);
 
+  if (!registro.ativo) return `acesso suspenso mantido, plano ${plano} (${segundaCompra ? "segunda compra" : tipo})`;
   return `${existente ? "acesso atualizado" : "acesso liberado"}, plano ${plano} (${segundaCompra ? "segunda compra" : tipo})`;
 }
 

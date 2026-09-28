@@ -271,7 +271,8 @@ cache-primeiro. Faixa "Instale na tela inicial e use como aplicativo" com
   ignorado (valor e padrão só valem para compra sem nenhum ID de produto).
 - Quem já é `basico` e paga de novo (outro `payment.id`) vira `completo`: é o
   upgrade, mesmo que o valor não tenha sido reconhecido.
-- Upsert em `compras` (e-mail, nome, plano). Plano nunca é rebaixado. Não envia
+- Upsert em `compras` (e-mail, nome, plano). Plano nunca é rebaixado e
+  suspensão manual (`ativo = false`) nunca é desfeita por pagamento novo. Não envia
   e-mail: a cliente recebe o link do app pela GGCheckout e entra com o e-mail.
 - 200 para tudo que foi processado ou ignorado de propósito (inclusive o evento
   `test`); 500 só em falha nossa, para o gateway tentar de novo.
